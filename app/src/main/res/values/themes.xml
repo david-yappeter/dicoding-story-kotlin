@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <!--<style name="Base.Theme.DicodingStory" parent="Theme.Material3.DayNight">-->
+
+    <!--</style>-->
+
+    <!--<style name="Theme.DicodingStory" parent="Base.Theme.DicodingStory">-->
+
+    <!--</style>-->
+
+    <style name="AppThemeLight" parent="Theme.Material3.DayNight">
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <style name="AppThemeDark" parent="Theme.Material3.Dark">
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <!-- This will set the fade in animation on all your activities by default -->
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+</resources>
