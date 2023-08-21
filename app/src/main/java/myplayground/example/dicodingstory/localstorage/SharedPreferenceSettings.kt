@@ -30,11 +30,11 @@ class SharedPreferencesSettings private constructor(private val sharedPreference
         }
     }
 
-    override suspend fun saveDarkThemePreference(isDarkTheme: Boolean) {
+    override suspend fun saveDarkThemeSettings(isDarkTheme: Boolean) {
         sharedPreferences.edit().putBoolean(KEY_DARK_THEME, isDarkTheme).apply()
     }
 
-    override suspend fun getDarkThemePreference(): Boolean {
+    override suspend fun getDarkThemeSettings(): Boolean {
         return sharedPreferences.getBoolean(KEY_DARK_THEME, false)
     }
 }

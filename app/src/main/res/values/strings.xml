@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Dicoding Story</string>
+    <string name="app_name">Story App</string>
+    <string name="home">Home</string>
+    <string name="konten_utama">Konten Utama</string>
+    <string name="settings">Settings</string>
+    <string name="konten_settings">Konten Settings</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

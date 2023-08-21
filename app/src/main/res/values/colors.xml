@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Cloudflare color palette -->
+    <color name="princeton_orange">#F48120</color>
+    <color name="yellow_orange">#FAAD3F</color>
+    <color name="arsenic">#404041</color>
+
+    <!-- base color -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
