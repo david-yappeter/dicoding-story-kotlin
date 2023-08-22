@@ -27,19 +27,7 @@ class SettingActivity : ThemeComponent() {
         setupAppbar()
         setupInput()
         setupTheme()
-
-
-        with(window) {
-            requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-
-            val slide = Slide()
-            slide.slideEdge = Gravity.END
-            slide.duration = 300
-
-            enterTransition = TransitionSet().apply {
-                addTransition(slide)
-            }
-        }
+        setupEnterAnimation()
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -51,6 +39,20 @@ class SettingActivity : ThemeComponent() {
         toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.arrow_back)
         toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    private fun setupEnterAnimation() {
+        with(window) {
+            requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
+            val slide = Slide()
+            slide.slideEdge = Gravity.END
+            slide.duration = 300
+
+            enterTransition = TransitionSet().apply {
+                addTransition(slide)
+            }
         }
     }
 

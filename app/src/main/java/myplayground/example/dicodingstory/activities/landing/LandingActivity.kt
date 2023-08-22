@@ -1,15 +1,17 @@
 package myplayground.example.dicodingstory.activities.landing
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.app.ActivityOptionsCompat
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
+import myplayground.example.dicodingstory.activities.sign_in.SignInActivity
+import myplayground.example.dicodingstory.activities.sign_up.SignUpActivity
+import myplayground.example.dicodingstory.components.Theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityLandingBinding
 
-class LandingActivity : AppCompatActivity() {
+class LandingActivity : ThemeComponent() {
     private var _binding: ActivityLandingBinding? = null
     private val binding get() = _binding ?: error("View binding not initialized")
 
@@ -17,6 +19,7 @@ class LandingActivity : AppCompatActivity() {
         _binding = ActivityLandingBinding.inflate(layoutInflater)
 
         setupAppbar()
+        setupContent()
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -46,6 +49,30 @@ class LandingActivity : AppCompatActivity() {
                     error("not implemented")
                 }
             }
+        }
+    }
+
+    private fun setupContent() {
+        // Sign In
+        val signInBtn = binding.btnSignIn
+
+        signInBtn.setOnClickListener {
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(
+                intent,
+                //                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+            )
+        }
+
+        // Sign Up
+        val signUpBtn = binding.btnSignUp
+
+        signUpBtn.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(
+                intent,
+                //                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+            )
         }
     }
 

@@ -35,8 +35,22 @@
 
     <!-- text appearance -->
     <style name="SwitchTitle" parent="TextAppearance.AppCompat.Widget.Switch"></style>
+
     <style name="Title1" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- button style -->
+    <style name="FacebookButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/facebook_blue</item>
+        <item name="android:textColor">@color/facebook_blue</item>
+        <item name="iconTint">@color/facebook_blue</item>
+    </style>
+
+    <style name="GoogleButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/google_red</item>
+        <item name="android:textColor">@color/google_red</item>
+        <item name="iconTint">@color/google_red</item>
     </style>
 
     <!-- fade in/out animation  -->
@@ -49,7 +63,7 @@
         <!--<item name="android:windowEnterAnimation">@android:anim/fade_in</item>-->
         <!--<item name="android:windowExitAnimation">@android:anim/fade_out</item>-->
 
-        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
-        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+        <!--<item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>-->
+        <!--<item name="android:windowExitAnimation">@android:anim/slide_out_right</item>-->
     </style>
 </resources>

@@ -5,7 +5,15 @@
     <color name="yellow_orange">#FAAD3F</color>
     <color name="arsenic">#404041</color>
 
+    <!-- Google color palette -->
+    <color name="google_red">#E34133</color>
+
+    <!-- Facebook color palette -->
+    <color name="facebook_blue">#1778F2</color>
+
     <!-- base color -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="light_stroke">#CCCCCC</color>
 </resources>

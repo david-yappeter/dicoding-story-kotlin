@@ -14,7 +14,6 @@ import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.components.Theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityHomeBinding
 
-@SuppressLint("CustomSplashScreen")
 class HomeActivity : ThemeComponent() {
     private var _binding: ActivityHomeBinding? = null
     private val binding

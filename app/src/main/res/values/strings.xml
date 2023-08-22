@@ -10,4 +10,9 @@
     <string name="sign_up">Sign Up</string>
     <string name="welcome_to_n_story_app">Welcome to\n Story App</string>
     <string name="let_s_get_started">Let\'s Get Started</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="connect_with_google">Connect with Google</string>
+    <string name="connect_with_facebook">Connect with Facebook</string>
+    <string name="or">OR</string>
 </resources>
