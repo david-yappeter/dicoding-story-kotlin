@@ -1,30 +1,22 @@
-package myplayground.example.dicodingstory.activities.home
+package myplayground.example.dicodingstory.activities.landing
 
-import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.transition.Slide
-import android.transition.TransitionSet
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.Window
 import androidx.core.app.ActivityOptionsCompat
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
-import myplayground.example.dicodingstory.components.Theme.ThemeComponent
-import myplayground.example.dicodingstory.databinding.ActivityHomeBinding
+import myplayground.example.dicodingstory.databinding.ActivityLandingBinding
 
-@SuppressLint("CustomSplashScreen")
-class HomeActivity : ThemeComponent() {
-    private var _binding: ActivityHomeBinding? = null
-    private val binding
-        get(): ActivityHomeBinding = _binding ?: error("View binding is not initialized")
+class LandingActivity : AppCompatActivity() {
+    private var _binding: ActivityLandingBinding? = null
+    private val binding get() = _binding ?: error("View binding not initialized")
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        _binding = ActivityHomeBinding.inflate(layoutInflater)
+        _binding = ActivityLandingBinding.inflate(layoutInflater)
 
         setupAppbar()
-        setupTransition()
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -43,7 +35,7 @@ class HomeActivity : ThemeComponent() {
                     startActivity(
                         intent,
                         ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            this@HomeActivity,
+                            this@LandingActivity,
                         )
                             .toBundle()
                     )
@@ -57,23 +49,8 @@ class HomeActivity : ThemeComponent() {
         }
     }
 
-    private fun setupTransition() {
-        with(window) {
-            requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-
-            val slide = Slide()
-            slide.slideEdge = Gravity.START
-            slide.duration = 300
-
-            exitTransition = TransitionSet().apply {
-                addTransition(slide)
-            }
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-
         _binding = null
     }
 }

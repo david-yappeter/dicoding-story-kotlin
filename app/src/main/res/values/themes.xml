@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="AppThemeLight" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Android Base Theme-->
         <item name="background">@color/white</item>
@@ -33,12 +34,22 @@
     </style>
 
     <!-- text appearance -->
-    <style name="Title2" parent="TextAppearance.AppCompat.Widget.Switch">
+    <style name="SwitchTitle" parent="TextAppearance.AppCompat.Widget.Switch"></style>
+    <style name="Title1" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- fade in/out animation  -->
     <style name="WindowAnimationTransition">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+        <!--<item name="android:windowActivityTransitions">true</item>-->
+
+        <!--<item name="android:windowEnterTransition">@android:transition/explode</item>-->
+        <!--<item name="android:windowExitTransition">@android:transition/explode</item>-->
+
+        <!--<item name="android:windowEnterAnimation">@android:anim/fade_in</item>-->
+        <!--<item name="android:windowExitAnimation">@android:anim/fade_out</item>-->
+
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
     </style>
 </resources>

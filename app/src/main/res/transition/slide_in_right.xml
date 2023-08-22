@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together">
+
+    <!-- Slide in animation -->
+    <slide
+        android:duration="300"
+        android:startDelay="0"
+        android:slideEdge="start" />
+
+    <!-- Fade in animation -->
+    <fade
+        android:duration="300"
+        android:startDelay="0" />
+
+</transitionSet>

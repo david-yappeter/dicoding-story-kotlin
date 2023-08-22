@@ -1,8 +1,10 @@
 package myplayground.example.dicodingstory.activities.settings
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.transition.Slide
+import android.transition.TransitionSet
+import android.view.Gravity
+import android.view.Window
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import myplayground.example.dicodingstory.R
@@ -25,6 +27,19 @@ class SettingActivity : ThemeComponent() {
         setupAppbar()
         setupInput()
         setupTheme()
+
+
+        with(window) {
+            requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+
+            val slide = Slide()
+            slide.slideEdge = Gravity.END
+            slide.duration = 300
+
+            enterTransition = TransitionSet().apply {
+                addTransition(slide)
+            }
+        }
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
