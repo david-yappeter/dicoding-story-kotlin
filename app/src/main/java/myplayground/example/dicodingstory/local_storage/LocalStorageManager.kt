@@ -1,6 +1,4 @@
-package myplayground.example.dicodingstory.localstorage
-
-import kotlinx.coroutines.flow.Flow
+package myplayground.example.dicodingstory.local_storage
 
 interface LocalStorageManager {
     suspend fun saveDarkThemeSettings(isDarkTheme: Boolean)

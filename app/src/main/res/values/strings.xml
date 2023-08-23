@@ -16,4 +16,6 @@
     <string name="connect_with_facebook">Connect with Facebook</string>
     <string name="or">OR</string>
     <string name="name">Name</string>
+    <string name="error_input_empty">Tidak boleh kosong</string>
+    <string name="registration_success">Pendaftaran berhasil, Silahkan login</string>
 </resources>

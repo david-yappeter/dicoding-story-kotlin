@@ -1,15 +1,13 @@
 package myplayground.example.dicodingstory.components.Theme
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.asLiveData
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.settings.ThemeComponentViewModel
 import myplayground.example.dicodingstory.activities.settings.ThemeComponentViewModelFactory
-import myplayground.example.dicodingstory.localstorage.DatastoreSettings
-import myplayground.example.dicodingstory.localstorage.dataStore
+import myplayground.example.dicodingstory.local_storage.DatastoreSettings
+import myplayground.example.dicodingstory.local_storage.dataStore
 
 open class ThemeComponent : AppCompatActivity() {
     private val viewModel: ThemeComponentViewModel by viewModels {

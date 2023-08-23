@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/name">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <myplayground.example.dicodingstory.components.text_field.NotEmptyEditText
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -123,19 +123,34 @@
 
                 <myplayground.example.dicodingstory.components.text_field.PasswordEditText
                     android:id="@+id/et_password"
-                    android:inputType="textVisiblePassword"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textVisiblePassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/submit_sign_in"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/sign_up"
-                android:textAllCaps="true" />
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/submit_sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="true" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/submit_sign_up_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:indicatorSize="24dp" />
+
+            </FrameLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sign_in"

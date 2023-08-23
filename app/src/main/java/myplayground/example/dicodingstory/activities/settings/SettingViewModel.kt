@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import myplayground.example.dicodingstory.localstorage.LocalStorageManager
+import myplayground.example.dicodingstory.local_storage.LocalStorageManager
 
 class SettingViewModel(private val localStorageManager: LocalStorageManager): ViewModel() {
     fun getDarkThemeSettings(): Boolean {

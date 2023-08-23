@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.components.Theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivitySettingBinding
-import myplayground.example.dicodingstory.localstorage.DatastoreSettings
-import myplayground.example.dicodingstory.localstorage.dataStore
+import myplayground.example.dicodingstory.local_storage.DatastoreSettings
+import myplayground.example.dicodingstory.local_storage.dataStore
 
 class SettingActivity : ThemeComponent() {
     private var _binding: ActivitySettingBinding? = null

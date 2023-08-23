@@ -2,7 +2,7 @@ package myplayground.example.dicodingstory.activities.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import myplayground.example.dicodingstory.localstorage.LocalStorageManager
+import myplayground.example.dicodingstory.local_storage.LocalStorageManager
 import java.lang.IllegalArgumentException
 
 class ThemeComponentViewModelFactory(private val localStorageManager: LocalStorageManager): ViewModelProvider.Factory {
