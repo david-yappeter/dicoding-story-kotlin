@@ -1,11 +1,10 @@
-package myplayground.example.dicodingstory.components.TextField
+package myplayground.example.dicodingstory.components.text_field
 
 import android.content.Context
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
 import android.util.Patterns
 import com.google.android.material.textfield.TextInputEditText
 

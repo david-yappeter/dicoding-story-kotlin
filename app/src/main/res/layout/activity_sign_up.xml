@@ -93,9 +93,23 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:hint="@string/email">
 
-                <myplayground.example.dicodingstory.components.TextField.EmailEditText
+                <myplayground.example.dicodingstory.components.text_field.EmailEditText
+                    android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -107,13 +121,16 @@
                 android:layout_marginTop="16dp"
                 android:hint="@string/password">
 
-                <myplayground.example.dicodingstory.components.TextField.PasswordEditText
+                <myplayground.example.dicodingstory.components.text_field.PasswordEditText
+                    android:id="@+id/et_password"
+                    android:inputType="textVisiblePassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

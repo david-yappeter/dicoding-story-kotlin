@@ -1,14 +1,13 @@
 package myplayground.example.dicodingstory.activities.sign_up
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.transition.Explode
 import android.transition.Slide
 import android.transition.TransitionSet
+import android.util.Log
 import android.view.Gravity
 import android.view.Window
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.sign_in.SignInActivity
@@ -24,12 +23,13 @@ class SignUpActivity : ThemeComponent() {
 
         setupAppbar()
         setupContent()
-//        setupEnterAnimation()
+        //        setupEnterAnimation()
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
     }
 
+    @Suppress("unused")
     private fun setupEnterAnimation() {
         with(window) {
             requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -63,9 +63,20 @@ class SignUpActivity : ThemeComponent() {
             //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME)
             startActivity(
                 intent,
-//                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                //                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
             )
             finish()
+        }
+
+        // submit sign up
+        binding.submitSignIn.setOnClickListener {
+            val name = binding.etName.text
+            val email = binding.etEmail.text
+            val password = binding.etPassword.text
+
+            Log.i("INPUTTTTTT ", name.toString())
+            Log.i("INPUTTTTTT ", email.toString())
+            Log.i("INPUTTTTTT ", password.toString())
         }
     }
 

@@ -15,4 +15,5 @@
     <string name="connect_with_google">Connect with Google</string>
     <string name="connect_with_facebook">Connect with Facebook</string>
     <string name="or">OR</string>
+    <string name="name">Name</string>
 </resources>

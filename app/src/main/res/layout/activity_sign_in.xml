@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email">
 
-                <myplayground.example.dicodingstory.components.TextField.EmailEditText
+                <myplayground.example.dicodingstory.components.text_field.EmailEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -107,7 +107,7 @@
                 android:layout_marginTop="16dp"
                 android:hint="@string/password">
 
-                <myplayground.example.dicodingstory.components.TextField.PasswordEditText
+                <myplayground.example.dicodingstory.components.text_field.PasswordEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
