@@ -16,4 +16,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="light_stroke">#CCCCCC</color>
+    <color name="disabled">#EBEBE4</color>
 </resources>

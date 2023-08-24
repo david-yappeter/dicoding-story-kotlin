@@ -6,10 +6,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import myplayground.example.dicodingstory.local_storage.LocalStorageManager
+import myplayground.example.dicodingstory.local_storage.model.UserData
 import myplayground.example.dicodingstory.network.DicodingStoryApi
 import myplayground.example.dicodingstory.network.request.LoginRequest
 
-class SignInViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
+class SignInViewModel(
+    private val networkApi: DicodingStoryApi,
+    private val localStorageManager: LocalStorageManager
+) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
     val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -26,6 +31,11 @@ class SignInViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
                     LoginRequest(email, password)
                 )
                 if (response.isSuccessful) {
+                    val body = response.body()
+
+                    if (body?.loginResult != null) {
+                        localStorageManager.saveUserData(UserData.fromLoginResultResponse(body.loginResult))
+                    }
                     isLoading.postValue(false)
                 } else {
                     onError("Error: ${response.message()}")

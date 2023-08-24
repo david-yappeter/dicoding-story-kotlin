@@ -1,5 +1,6 @@
-package myplayground.example.dicodingstory.activities.sign_up
+package myplayground.example.dicodingstory.activities.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,34 +8,30 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import myplayground.example.dicodingstory.model.Story
 import myplayground.example.dicodingstory.network.DicodingStoryApi
-import myplayground.example.dicodingstory.network.request.RegisterRequest
 
-class SignUpViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
+class HomeViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
+    val stories = MutableLiveData<List<Story>>()
     val errorMessage = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
-    val isSuccess = MutableLiveData<Boolean>()
     private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled ${throwable.localizedMessage}")
     }
 
-    fun registerUser(
-        name: String,
-        email: String,
-        password: String,
-    ) {
+    fun fetchStories() {
         viewModelScope.launch(Dispatchers.IO + backgroundExceptionHandler) {
             withContext(Dispatchers.Main) {
                 isLoading.value = true
             }
 
             try {
-                val response = networkApi.register(
-                    RegisterRequest(name, email, password)
-                )
+                val response = networkApi.fetchStories()
+
                 if (response.isSuccessful) {
-                    isSuccess.postValue(true)
+                    val body = response.body()
                     isLoading.postValue(false)
+                    stories.postValue(body?.listStory?.map { Story.fromStoryResponse(it) })
                 } else {
                     onError("Error: ${response.message()}")
                 }

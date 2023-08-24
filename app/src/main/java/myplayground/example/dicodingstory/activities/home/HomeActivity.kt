@@ -5,25 +5,46 @@ import android.content.Intent
 import android.os.Bundle
 import android.transition.Slide
 import android.transition.TransitionSet
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.Window
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
+import myplayground.example.dicodingstory.adapter.StoryListAdapter
 import myplayground.example.dicodingstory.components.Theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityHomeBinding
+import myplayground.example.dicodingstory.local_storage.DatastoreSettings
+import myplayground.example.dicodingstory.local_storage.dataStore
+import myplayground.example.dicodingstory.network.DicodingStoryApi
+import myplayground.example.dicodingstory.network.NetworkConfig
 
 class HomeActivity : ThemeComponent() {
     private var _binding: ActivityHomeBinding? = null
     private val binding
         get(): ActivityHomeBinding = _binding ?: error("View binding is not initialized")
+    private val viewModel: HomeViewModel by viewModels {
+        HomeViewModelFactory(
+            NetworkConfig.create(
+                DicodingStoryApi.BASE_URL,
+                DatastoreSettings.getInstance(this.dataStore)
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         _binding = ActivityHomeBinding.inflate(layoutInflater)
 
         setupAppbar()
-        setupTransition()
+        setupContent()
+
+        binding.veilRecyclerView.setAdapter(StoryListAdapter())
+        binding.veilRecyclerView.setLayoutManager(LinearLayoutManager(this))
+        binding.veilRecyclerView.addVeiledItems(10)
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -56,18 +77,17 @@ class HomeActivity : ThemeComponent() {
         }
     }
 
-    private fun setupTransition() {
-        with(window) {
-            requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-
-            val slide = Slide()
-            slide.slideEdge = Gravity.START
-            slide.duration = 300
-
-            exitTransition = TransitionSet().apply {
-                addTransition(slide)
+    private fun setupContent() {
+        viewModel.errorMessage.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        }
+        viewModel.stories.observe(this) { stories ->
+            stories.map {
+                Log.i("STORYYYY", it.toString())
             }
         }
+
+        viewModel.fetchStories()
     }
 
     override fun onDestroy() {

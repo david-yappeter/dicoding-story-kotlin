@@ -5,9 +5,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import myplayground.example.dicodingstory.local_storage.model.UserData
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "dicoding_story_ds")
 
@@ -15,6 +19,7 @@ class DatastoreSettings private constructor(private val dataStore: DataStore<Pre
     LocalStorageManager {
     companion object {
         private val KEY_DARK_THEME = booleanPreferencesKey("is_dark_theme")
+        private val KEY_USER_DATA = stringPreferencesKey("user_data")
 
         @Volatile
         private var instance: DatastoreSettings? = null
@@ -38,5 +43,27 @@ class DatastoreSettings private constructor(private val dataStore: DataStore<Pre
         return dataStore.data.map { preferences ->
             preferences[KEY_DARK_THEME] ?: false
         }.first()
+    }
+
+    override suspend fun saveUserData(userData: UserData) {
+        val json = Gson().toJson(userData)
+        dataStore.edit { preferences ->
+            preferences[KEY_USER_DATA] = json
+        }
+    }
+
+    override fun getUserDataAsync(): Flow<UserData?> {
+        return dataStore.data.map { preferences ->
+            val json = preferences[KEY_USER_DATA]
+            if (json != null) {
+                return@map Gson().fromJson(json, UserData::class.java)
+            } else {
+                null
+            }
+        }
+    }
+
+    override suspend fun getUserDataSync(): UserData? {
+        return getUserDataAsync().first()
     }
 }

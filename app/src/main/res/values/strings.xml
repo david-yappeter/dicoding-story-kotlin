@@ -18,4 +18,6 @@
     <string name="name">Name</string>
     <string name="error_input_empty">Tidak boleh kosong</string>
     <string name="registration_success">Pendaftaran berhasil, Silahkan login</string>
+    <string name="lorem_ipsum">Lorem Ipsum</string>
+    <string name="lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry_lorem_ipsum_has_been_the_industry">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry</string>
 </resources>

@@ -35,6 +35,21 @@
                 android:layout_height="wrap_content"
                 android:text="TESTTTTTTTT" />
 
+            <com.skydoves.androidveil.VeilRecyclerFrameView
+                android:id="@+id/veilRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:veilFrame_baseAlpha="0.6"
+                app:veilFrame_baseColor="@color/light_stroke"
+                app:veilFrame_highlightAlpha="1.0"
+                app:veilFrame_highlightColor="@color/yellow_orange"
+                app:veilFrame_isItemWrapContentHeight="true"
+                app:veilFrame_isItemWrapContentWidth="true"
+                app:veilFrame_layout="@layout/story_row"
+                app:veilFrame_radius="8dp"
+                app:veilFrame_shimmerEnable="true"
+                app:veilFrame_veiled="true" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -40,17 +40,24 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Subtitle1" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/light_stroke</item>
+    </style>
+
     <!-- button style -->
     <style name="FacebookButton" parent="Widget.Material3.Button.OutlinedButton">
         <item name="strokeColor">@color/facebook_blue</item>
         <item name="android:textColor">@color/facebook_blue</item>
         <item name="iconTint">@color/facebook_blue</item>
+        <item name="backgroundTint">@color/color_states_material_button</item>
     </style>
 
     <style name="GoogleButton" parent="Widget.Material3.Button.OutlinedButton">
         <item name="strokeColor">@color/google_red</item>
         <item name="android:textColor">@color/google_red</item>
         <item name="iconTint">@color/google_red</item>
+        <item name="backgroundTint">@color/color_states_material_button</item>
     </style>
 
     <!-- fade in/out animation  -->
