@@ -29,12 +29,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/asd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TESTTTTTTTT" />
-
             <com.skydoves.androidveil.VeilRecyclerFrameView
                 android:id="@+id/veilRecyclerView"
                 android:layout_width="match_parent"
@@ -47,8 +41,7 @@
                 app:veilFrame_isItemWrapContentWidth="true"
                 app:veilFrame_layout="@layout/story_row"
                 app:veilFrame_radius="8dp"
-                app:veilFrame_shimmerEnable="true"
-                app:veilFrame_veiled="true" />
+                app:veilFrame_shimmerEnable="true" />
 
         </LinearLayout>
 

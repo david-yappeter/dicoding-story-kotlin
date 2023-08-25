@@ -35,16 +35,13 @@ class HomeActivity : ThemeComponent() {
             )
         )
     }
+    private val adapter = StoryListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         _binding = ActivityHomeBinding.inflate(layoutInflater)
 
         setupAppbar()
         setupContent()
-
-        binding.veilRecyclerView.setAdapter(StoryListAdapter())
-        binding.veilRecyclerView.setLayoutManager(LinearLayoutManager(this))
-        binding.veilRecyclerView.addVeiledItems(10)
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -78,14 +75,23 @@ class HomeActivity : ThemeComponent() {
     }
 
     private fun setupContent() {
+        // view model observer
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) binding.veilRecyclerView.veil() else binding.veilRecyclerView.unVeil()
+        }
         viewModel.errorMessage.observe(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }
         viewModel.stories.observe(this) { stories ->
             stories.map {
-                Log.i("STORYYYY", it.toString())
+                adapter.updateData(stories)
             }
         }
+
+        // recycler view
+        binding.veilRecyclerView.setAdapter(adapter)
+        binding.veilRecyclerView.setLayoutManager(LinearLayoutManager(this))
+        binding.veilRecyclerView.addVeiledItems(10)
 
         viewModel.fetchStories()
     }

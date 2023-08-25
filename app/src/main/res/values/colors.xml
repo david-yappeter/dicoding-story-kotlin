@@ -14,7 +14,8 @@
     <!-- base color -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="transparent">#00FFFFFF</color>
     <color name="light_stroke">#CCCCCC</color>
+    <color name="transparent">#00FFFFFF</color>
     <color name="disabled">#EBEBE4</color>
+    <color name="subtitle">#6E6E6E</color>
 </resources>
