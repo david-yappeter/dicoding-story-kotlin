@@ -41,7 +41,7 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
         fun bind(story: Story) {
             Glide.with(itemView).load(story.photoUrl)
                 .into(itemView.findViewById(R.id.iv_post_image))
-            itemView.findViewById<TextView>(R.id.tv_user).text = story.name
+            itemView.findViewById<TextView>(R.id.tv_username).text = story.name
             itemView.findViewById<TextView>(R.id.tv_description).text = story.description
 
             itemView.findViewById<TextView>(R.id.tv_posted_at).text =

@@ -64,6 +64,12 @@ class SignInActivity : ThemeComponent() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
+        viewModel.isSuccess.observe(this) { isSuccess ->
+            if (isSuccess) {
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
         viewModel.isLoading.observe(this) { isLoading ->
             binding.submitSignIn.isEnabled = !isLoading
             binding.submitSignInLoading.visibility = if (isLoading) View.VISIBLE else View.GONE

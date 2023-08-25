@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.detail.StoryDetailActivity
@@ -33,7 +34,16 @@ class HomeActivity : ThemeComponent() {
     private val adapter = StoryListAdapter { v, story ->
         val intent = Intent(v.context, StoryDetailActivity::class.java)
         intent.putExtra(StoryDetailActivity.EXTRA_STORY, story)
-        startActivity(intent)
+        startActivity(
+            intent,
+            ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                Pair(v.findViewById(R.id.tv_username), "tv_username"),
+                Pair(v.findViewById(R.id.tv_description), "tv_description"),
+                Pair(v.findViewById(R.id.iv_post_image), "iv_post_image"),
+                Pair(v.findViewById(R.id.iv_post_user), "iv_post_user"),
+            ).toBundle()
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
