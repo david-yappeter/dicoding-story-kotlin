@@ -3,6 +3,7 @@ package myplayground.example.dicodingstory.activities.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
@@ -86,10 +87,18 @@ class HomeActivity : ThemeComponent() {
     private fun setupContent() {
         // view model observer
         viewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading) binding.veilRecyclerView.veil() else binding.veilRecyclerView.unVeil()
+            if (isLoading) {
+                binding.errorContainer.visibility = View.GONE
+                binding.veilRecyclerView.visibility = View.VISIBLE
+                binding.veilRecyclerView.veil()
+            } else {
+                binding.veilRecyclerView.unVeil()
+            }
         }
         viewModel.errorMessage.observe(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            binding.errorContainer.visibility = View.VISIBLE
+            binding.veilRecyclerView.visibility = View.GONE
         }
         viewModel.stories.observe(this) { stories ->
             stories.map {
@@ -103,6 +112,11 @@ class HomeActivity : ThemeComponent() {
         binding.veilRecyclerView.addVeiledItems(10)
 
         viewModel.fetchStories()
+
+        // retry fetch
+        binding.btnRetry.setOnClickListener {
+            viewModel.fetchStories()
+        }
     }
 
     override fun onDestroy() {

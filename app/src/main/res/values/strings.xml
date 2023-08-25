@@ -21,4 +21,6 @@
     <string name="lorem_ipsum">Lorem Ipsum</string>
     <string name="lorem_ipsum_desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry</string>
     <string name="_4_hours_ago">4 Hours ago</string>
+    <string name="retry">Retry</string>
+    <string name="logout">Logout</string>
 </resources>
