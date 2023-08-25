@@ -13,7 +13,7 @@ class StoryDetailViewModel(private val networkApi: DicodingStoryApi) : ViewModel
     val errorMessage = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
     val storyDetail = MutableLiveData<Story>()
-
+    
     fun fetchStory(id: String) {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {

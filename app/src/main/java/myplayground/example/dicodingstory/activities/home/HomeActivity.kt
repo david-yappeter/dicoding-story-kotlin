@@ -1,19 +1,14 @@
 package myplayground.example.dicodingstory.activities.home
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.transition.Slide
-import android.transition.TransitionSet
-import android.util.Log
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import myplayground.example.dicodingstory.R
+import myplayground.example.dicodingstory.activities.detail.StoryDetailActivity
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.adapter.StoryListAdapter
 import myplayground.example.dicodingstory.components.Theme.ThemeComponent
@@ -35,7 +30,11 @@ class HomeActivity : ThemeComponent() {
             )
         )
     }
-    private val adapter = StoryListAdapter()
+    private val adapter = StoryListAdapter { v, story ->
+        val intent = Intent(v.context, StoryDetailActivity::class.java)
+        intent.putExtra(StoryDetailActivity.EXTRA_STORY, story)
+        startActivity(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         _binding = ActivityHomeBinding.inflate(layoutInflater)

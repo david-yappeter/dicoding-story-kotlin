@@ -11,7 +11,7 @@ import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.model.Story
 import myplayground.example.dicodingstory.util.DateTimeRelative
 
-class StoryListAdapter(private val onClickListener: (story: Story) -> Unit = {}) :
+class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> Unit = { _, _ -> }) :
     RecyclerView.Adapter<StoryListAdapter.ViewHolder>() {
     private val storyList: MutableList<Story> = mutableListOf()
 
@@ -56,7 +56,7 @@ class StoryListAdapter(private val onClickListener: (story: Story) -> Unit = {})
         private fun onClick(v: View, story: Story) {
             when (v.id) {
                 R.id.cl_story -> {
-                    onClickListener(story)
+                    onClickListener(v, story)
                 }
 
                 else -> {}

@@ -67,6 +67,11 @@
         <item name="backgroundTint">@color/color_states_material_button</item>
     </style>
 
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <!-- fade in/out animation  -->
     <style name="WindowAnimationTransition">
         <!--<item name="android:windowActivityTransitions">true</item>-->
