@@ -45,17 +45,16 @@ class DatastoreSettings private constructor(private val dataStore: DataStore<Pre
         }.first()
     }
 
-    override suspend fun saveUserData(userData: UserData) {
-        val json = Gson().toJson(userData)
+    override suspend fun saveUserData(userData: UserData?) {
         dataStore.edit { preferences ->
-            preferences[KEY_USER_DATA] = json
+            preferences[KEY_USER_DATA] = if (userData != null) Gson().toJson(userData) else ""
         }
     }
 
     override fun getUserDataAsync(): Flow<UserData?> {
         return dataStore.data.map { preferences ->
             val json = preferences[KEY_USER_DATA]
-            if (json != null) {
+            if (!json.isNullOrEmpty()) {
                 return@map Gson().fromJson(json, UserData::class.java)
             } else {
                 null

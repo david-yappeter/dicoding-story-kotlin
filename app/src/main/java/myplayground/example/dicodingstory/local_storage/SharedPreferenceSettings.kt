@@ -36,14 +36,15 @@ class SharedPreferencesSettings private constructor(private val sharedPreference
         return sharedPreferences.getBoolean(KEY_DARK_THEME, false)
     }
 
-    override suspend fun saveUserData(userData: UserData) {
-        sharedPreferences.edit().putString(KEY_USER_DATA, Gson().toJson(userData)).apply()
+    override suspend fun saveUserData(userData: UserData?) {
+        sharedPreferences.edit()
+            .putString(KEY_USER_DATA, if (userData != null) Gson().toJson(userData) else "").apply()
     }
 
     override fun getUserDataAsync(): Flow<UserData?> {
         return flow {
             val json = sharedPreferences.getString(KEY_USER_DATA, "")
-            if (json != null) {
+            if (!json.isNullOrEmpty()) {
                 emit(Gson().fromJson(json, UserData::class.java))
             } else {
                 emit(null)

@@ -8,7 +8,7 @@ interface LocalStorageManager {
 
     suspend fun getDarkThemeSettings(): Boolean
 
-    suspend fun saveUserData(userData: UserData)
+    suspend fun saveUserData(userData: UserData?)
 
     fun getUserDataAsync(): Flow<UserData?>
 

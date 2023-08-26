@@ -84,6 +84,7 @@ class LandingActivity : ThemeComponent() {
         }
 
         viewModel.getUserData().observe(this) { userData ->
+            Log.i("USERDATA", userData.toString())
             if (userData != null) {
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)

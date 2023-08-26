@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import myplayground.example.dicodingstory.local_storage.LocalStorageManager
 import myplayground.example.dicodingstory.local_storage.model.UserData
 import myplayground.example.dicodingstory.network.DicodingStoryApi
@@ -27,6 +28,10 @@ class SignInViewModel(
         password: String,
     ) {
         viewModelScope.launch(Dispatchers.IO + backgroundExceptionHandler) {
+            withContext(Dispatchers.Main) {
+                isLoading.value = true
+            }
+
             try {
                 val response = networkApi.login(
                     LoginRequest(email, password)

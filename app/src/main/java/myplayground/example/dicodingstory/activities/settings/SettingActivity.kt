@@ -1,13 +1,12 @@
 package myplayground.example.dicodingstory.activities.settings
 
+import android.content.Intent
 import android.os.Bundle
-import android.transition.Slide
-import android.transition.TransitionSet
-import android.view.Gravity
-import android.view.Window
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import myplayground.example.dicodingstory.R
+import myplayground.example.dicodingstory.activities.landing.LandingActivity
 import myplayground.example.dicodingstory.components.Theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivitySettingBinding
 import myplayground.example.dicodingstory.local_storage.DatastoreSettings
@@ -25,7 +24,7 @@ class SettingActivity : ThemeComponent() {
         _binding = ActivitySettingBinding.inflate(layoutInflater)
 
         setupAppbar()
-        setupInput()
+        setupContent()
         setupTheme()
 
         super.onCreate(savedInstanceState)
@@ -41,13 +40,28 @@ class SettingActivity : ThemeComponent() {
         }
     }
 
-    private fun setupInput() {
+    private fun setupContent() {
         val isDarkMode = viewModel.getDarkThemeSettings()
+        val isLoggedIn = viewModel.isUserLoggedIn()
 
+        // dark mode switch
         binding.switchDarkMode.isChecked = isDarkMode
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setIsDarkThemeSettings(isChecked)
             recreate()
+        }
+
+        // log out button
+        if (isLoggedIn) {
+            binding.logout.visibility = View.VISIBLE
+
+            binding.logout.setOnClickListener {
+                viewModel.logout()
+
+                val intent = Intent(this, LandingActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
