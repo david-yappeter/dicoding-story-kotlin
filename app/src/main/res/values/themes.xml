@@ -13,6 +13,9 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnSurface">@color/black</item>
 
+        <!-- material 3 theme FAB -->
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+
         <!--<item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>-->
     </style>
 
@@ -25,7 +28,6 @@
         <!-- material 3 theme -->
         <item name="colorPrimary">@color/princeton_orange</item>
         <item name="colorSecondary">@color/yellow_orange</item>
-
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorOnSurface">@color/white</item>
@@ -71,6 +73,24 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <!--  FAB  -->
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">@style/circleImageView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
+        <item name="colorSecondary">@color/princeton_orange</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+    </style>
+
 
     <!-- fade in/out animation  -->
     <style name="WindowAnimationTransition">

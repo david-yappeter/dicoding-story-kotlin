@@ -10,6 +10,8 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import myplayground.example.dicodingstory.R
+import myplayground.example.dicodingstory.activities.add_story.AddStoryActivity
+import myplayground.example.dicodingstory.activities.add_story.AddStoryViewModel
 import myplayground.example.dicodingstory.activities.detail.StoryDetailActivity
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.adapter.StoryListAdapter
@@ -116,6 +118,12 @@ class HomeActivity : ThemeComponent() {
         // retry fetch
         binding.btnRetry.setOnClickListener {
             viewModel.fetchStories()
+        }
+
+        // FAB add
+        binding.fabAdd.setOnClickListener {
+            val intent = Intent(this, AddStoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
