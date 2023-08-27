@@ -26,7 +26,7 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
         holder.bind(storyList[position])
     }
 
-    fun updateData(newStoryList: List<Story>) {
+    fun replaceData(newStoryList: List<Story>) {
         val diffCallback = StoryDiffCallback(storyList, newStoryList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
@@ -34,6 +34,18 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
         storyList.addAll(newStoryList)
 
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun addData(newStoryList: List<Story>) {
+        val diffCallback = StoryDiffCallback(storyList, newStoryList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        val startPosition = storyList.size
+        storyList.addAll(newStoryList)
+
+        diffResult.dispatchUpdatesTo(this)
+
+        notifyItemRangeInserted(startPosition, newStoryList.size)
     }
 
     inner class ViewHolder(itemView: View) :
@@ -45,8 +57,8 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
             itemView.findViewById<TextView>(R.id.tv_description).text = story.description
 
             itemView.findViewById<TextView>(R.id.tv_posted_at).text =
-                if (story.created_at != null)
-                    DateTimeRelative.parseTimeRelative(story.created_at) else ""
+                if (story.createdAt != null)
+                    DateTimeRelative.parseTimeRelative(story.createdAt) else ""
 
             itemView.setOnClickListener {
                 onClick(itemView, story)

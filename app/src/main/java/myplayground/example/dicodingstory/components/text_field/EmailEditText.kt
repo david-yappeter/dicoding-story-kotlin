@@ -8,10 +8,8 @@ import android.util.AttributeSet
 import android.util.Patterns
 import com.google.android.material.textfield.TextInputEditText
 
+@Suppress("unused", "unused")
 class EmailEditText : TextInputEditText {
-    companion object {
-        private const val MIN_CHARACTER_LENGTH = 8
-    }
 
     constructor(context: Context) : super(context) {
         init()

@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.landing.LandingActivity
-import myplayground.example.dicodingstory.components.Theme.ThemeComponent
+import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivitySettingBinding
 import myplayground.example.dicodingstory.local_storage.DatastoreSettings
 import myplayground.example.dicodingstory.local_storage.dataStore
@@ -25,7 +25,6 @@ class SettingActivity : ThemeComponent() {
 
         setupAppbar()
         setupContent()
-        setupTheme()
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -48,7 +47,6 @@ class SettingActivity : ThemeComponent() {
         binding.switchDarkMode.isChecked = isDarkMode
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setIsDarkThemeSettings(isChecked)
-            recreate()
         }
 
         // log out button
@@ -63,10 +61,6 @@ class SettingActivity : ThemeComponent() {
                 finish()
             }
         }
-    }
-
-    private fun setupTheme() {
-        setTheme(if (viewModel.getDarkThemeSettings()) R.style.AppThemeDark else R.style.AppThemeLight)
     }
 
     override fun onDestroy() {

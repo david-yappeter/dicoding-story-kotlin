@@ -13,7 +13,7 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.sign_in.SignInActivity
-import myplayground.example.dicodingstory.components.Theme.ThemeComponent
+import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivitySignUpBinding
 import myplayground.example.dicodingstory.network.DicodingStoryApi
 import myplayground.example.dicodingstory.network.NetworkConfig

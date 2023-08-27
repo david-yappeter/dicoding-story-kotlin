@@ -2,7 +2,6 @@ package myplayground.example.dicodingstory.activities.landing
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
@@ -11,7 +10,7 @@ import myplayground.example.dicodingstory.activities.home.HomeActivity
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.activities.sign_in.SignInActivity
 import myplayground.example.dicodingstory.activities.sign_up.SignUpActivity
-import myplayground.example.dicodingstory.components.Theme.ThemeComponent
+import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityLandingBinding
 import myplayground.example.dicodingstory.local_storage.DatastoreSettings
 import myplayground.example.dicodingstory.local_storage.dataStore

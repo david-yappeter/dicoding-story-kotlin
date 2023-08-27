@@ -8,11 +8,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import myplayground.example.dicodingstory.local_storage.model.UserData
 
+@Suppress("unused")
 class SharedPreferencesSettings private constructor(private val sharedPreferences: SharedPreferences) :
     LocalStorageManager {
     companion object {
-        private val KEY_DARK_THEME = "is_dark_theme"
-        private val KEY_USER_DATA = "user_data"
+        private const val KEY_DARK_THEME = "is_dark_theme"
+        private const val KEY_USER_DATA = "user_data"
 
         @Volatile
         private var instance: SharedPreferencesSettings? = null
@@ -30,6 +31,12 @@ class SharedPreferencesSettings private constructor(private val sharedPreference
 
     override suspend fun saveDarkThemeSettings(isDarkTheme: Boolean) {
         sharedPreferences.edit().putBoolean(KEY_DARK_THEME, isDarkTheme).apply()
+    }
+
+    override fun getDarkThemeSettingsAsync(): Flow<Boolean> {
+        return flow {
+            emit(sharedPreferences.getBoolean(KEY_DARK_THEME, false))
+        }
     }
 
     override suspend fun getDarkThemeSettings(): Boolean {

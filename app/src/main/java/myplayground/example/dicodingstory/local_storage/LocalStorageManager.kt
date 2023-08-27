@@ -6,6 +6,8 @@ import myplayground.example.dicodingstory.local_storage.model.UserData
 interface LocalStorageManager {
     suspend fun saveDarkThemeSettings(isDarkTheme: Boolean)
 
+    fun getDarkThemeSettingsAsync(): Flow<Boolean>
+
     suspend fun getDarkThemeSettings(): Boolean
 
     suspend fun saveUserData(userData: UserData?)

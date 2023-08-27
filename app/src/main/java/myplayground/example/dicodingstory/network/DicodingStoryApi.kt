@@ -2,7 +2,6 @@ package myplayground.example.dicodingstory.network
 
 import myplayground.example.dicodingstory.network.request.LoginRequest
 import myplayground.example.dicodingstory.network.request.RegisterRequest
-import myplayground.example.dicodingstory.network.response.DetailStoryResponse
 import myplayground.example.dicodingstory.network.response.FileUploadResponse
 import myplayground.example.dicodingstory.network.response.ListStoryResponse
 import myplayground.example.dicodingstory.network.response.LoginResponse
@@ -15,9 +14,9 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
-import retrofit2.http.Path
 import retrofit2.http.Query
 
+@Suppress("unused", "unused")
 interface DicodingStoryApi {
     companion object {
         const val BASE_URL = "https://story-api.dicoding.dev/v1/"
@@ -39,11 +38,6 @@ interface DicodingStoryApi {
         @Query("size") size: Int? = null,
         @Query("location") location: Int? = null,
     ): Response<ListStoryResponse>
-
-    @GET("stories/:id")
-    suspend fun getStory(
-        @Path("id") id: String,
-    ): Response<DetailStoryResponse>
 
     @Multipart
     @POST("stories")

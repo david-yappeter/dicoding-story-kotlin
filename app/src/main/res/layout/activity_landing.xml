@@ -34,7 +34,8 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="@string/welcome_to_n_story_app"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="?attr/titleTextColor" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,6 +83,40 @@
             android:text="@string/let_s_get_started"
             android:textAlignment="center" />
     </LinearLayout>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/dot_menu_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        app:altSrc="@drawable/ic_circle_full_24"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_ll"
+        app:layout_constraintEnd_toStartOf="@id/dot_menu_2"
+        app:srcCompat="@drawable/ic_circle_24"
+        app:tint="@color/yellow_orange" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/dot_menu_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:altSrc="@drawable/ic_circle_full_24"
+        app:layout_constraintBottom_toBottomOf="@+id/dot_menu_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_circle_24"
+        app:tint="@color/yellow_orange" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/dot_menu_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        app:altSrc="@drawable/ic_circle_full_24"
+        app:layout_constraintBottom_toBottomOf="@+id/dot_menu_2"
+        app:layout_constraintStart_toEndOf="@+id/dot_menu_2"
+        app:srcCompat="@drawable/ic_circle_24"
+        app:tint="@color/yellow_orange" />
 
     <LinearLayout
         android:id="@+id/bottom_ll"

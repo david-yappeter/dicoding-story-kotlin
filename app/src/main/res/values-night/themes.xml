@@ -1,3 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- android base theme -->
+        <item name="background">@color/arsenic</item>
+        <item name="android:statusBarColor">@color/yellow_orange</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
+
+        <!-- material 3 theme -->
+        <item name="colorPrimary">@color/princeton_orange</item>
+        <item name="colorSecondary">@color/yellow_orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+
+        <!-- material 3 theme FAB -->
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+    </style>
+
+
+    <!-- button style -->
+    <style name="FacebookButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/facebook_blue</item>
+        <item name="android:textColor">@color/facebook_blue</item>
+        <item name="iconTint">@color/facebook_blue</item>
+        <item name="backgroundTint">@color/color_states_material_button</item>
+    </style>
+
+    <style name="GoogleButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/google_red</item>
+        <item name="android:textColor">@color/google_red</item>
+        <item name="iconTint">@color/google_red</item>
+        <item name="backgroundTint">@color/color_states_material_button</item>
+    </style>
+
 </resources>

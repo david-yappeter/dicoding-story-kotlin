@@ -3,7 +3,6 @@ package myplayground.example.dicodingstory.activities.landing
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import myplayground.example.dicodingstory.local_storage.LocalStorageManager
-import myplayground.example.dicodingstory.network.DicodingStoryApi
 import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")

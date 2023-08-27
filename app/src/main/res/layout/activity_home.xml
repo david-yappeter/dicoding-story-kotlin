@@ -28,23 +28,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.skydoves.androidveil.VeilRecyclerFrameView
-                android:id="@+id/veilRecyclerView"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/srl"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:veilFrame_baseAlpha="0.6"
-                app:veilFrame_baseColor="@color/light_stroke"
-                app:veilFrame_highlightAlpha="1.0"
-                app:veilFrame_highlightColor="@color/yellow_orange"
-                app:veilFrame_isItemWrapContentHeight="true"
-                app:veilFrame_isItemWrapContentWidth="true"
-                app:veilFrame_layout="@layout/story_row"
-                app:veilFrame_radius="8dp"
-                app:veilFrame_shimmerEnable="true" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.skydoves.androidveil.VeilRecyclerFrameView
+                    android:id="@+id/veilRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:veilFrame_baseAlpha="0.6"
+                    app:veilFrame_baseColor="@color/light_stroke"
+                    app:veilFrame_highlightAlpha="1.0"
+                    app:veilFrame_highlightColor="@color/yellow_orange"
+                    app:veilFrame_isItemWrapContentHeight="true"
+                    app:veilFrame_isItemWrapContentWidth="true"
+                    app:veilFrame_layout="@layout/story_row"
+                    app:veilFrame_radius="8dp"
+                    app:veilFrame_shimmerEnable="true" />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="40dp"
+                android:contentDescription="@string/tambah_story"
                 android:src="@drawable/add"
                 app:fabCustomSize="56dp"
                 app:layout_constraintBottom_toBottomOf="parent"

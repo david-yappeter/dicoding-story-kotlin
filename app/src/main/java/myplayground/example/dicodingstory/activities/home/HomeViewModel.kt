@@ -1,6 +1,5 @@
 package myplayground.example.dicodingstory.activities.home
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,26 +11,41 @@ import myplayground.example.dicodingstory.model.Story
 import myplayground.example.dicodingstory.network.DicodingStoryApi
 
 class HomeViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
-    val stories = MutableLiveData<List<Story>>()
+    val stories = MutableLiveData<List<Story>>(listOf())
+    val appendStories = MutableLiveData<List<Story>>(listOf())
+    val isLastPage = MutableLiveData(false)
     val errorMessage = MutableLiveData<String>()
-    val isLoading = MutableLiveData<Boolean>()
+    val isLoading = MutableLiveData(false)
+    val currentPage = MutableLiveData(1)
+    private val limit = 6
     private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled ${throwable.localizedMessage}")
     }
 
-    fun fetchStories() {
+    fun fetchStories(isLoadMore: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO + backgroundExceptionHandler) {
             withContext(Dispatchers.Main) {
-                isLoading.value = true
+                if (!isLoadMore) {
+                    isLoading.value = true
+                }
             }
 
             try {
-                val response = networkApi.fetchStories()
+                val response = networkApi.fetchStories(currentPage.value, limit)
 
                 if (response.isSuccessful) {
                     val body = response.body()
+                    if (body?.listStory?.size != limit) {
+                        isLastPage.postValue(true)
+                    }
+
+                    currentPage.postValue((currentPage.value as Int) + 1)
                     isLoading.postValue(false)
-                    stories.postValue(body?.listStory?.map { Story.fromStoryResponse(it) })
+                    if (isLoadMore) {
+                        appendStories.postValue(body?.listStory?.map { Story.fromStoryResponse(it) })
+                    } else {
+                        stories.postValue(body?.listStory?.map { Story.fromStoryResponse(it) })
+                    }
                 } else {
                     onError("Error: ${response.message()}")
                 }

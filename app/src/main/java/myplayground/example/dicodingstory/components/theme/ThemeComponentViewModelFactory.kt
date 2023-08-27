@@ -1,13 +1,14 @@
-package myplayground.example.dicodingstory.activities.settings
+package myplayground.example.dicodingstory.components.theme
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import myplayground.example.dicodingstory.local_storage.LocalStorageManager
 import java.lang.IllegalArgumentException
 
-class ThemeComponentViewModelFactory(private val localStorageManager: LocalStorageManager): ViewModelProvider.Factory {
-    override fun <T: ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(ThemeComponentViewModel::class.java)) {
+class ThemeComponentViewModelFactory(private val localStorageManager: LocalStorageManager) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ThemeComponentViewModel::class.java)) {
             return ThemeComponentViewModel(localStorageManager) as T
         }
         throw IllegalArgumentException("Unknown view model class")

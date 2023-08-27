@@ -9,13 +9,13 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.add_story.AddStoryActivity
-import myplayground.example.dicodingstory.activities.add_story.AddStoryViewModel
 import myplayground.example.dicodingstory.activities.detail.StoryDetailActivity
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.adapter.StoryListAdapter
-import myplayground.example.dicodingstory.components.Theme.ThemeComponent
+import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityHomeBinding
 import myplayground.example.dicodingstory.local_storage.DatastoreSettings
 import myplayground.example.dicodingstory.local_storage.dataStore
@@ -95,6 +95,7 @@ class HomeActivity : ThemeComponent() {
                 binding.veilRecyclerView.veil()
             } else {
                 binding.veilRecyclerView.unVeil()
+                binding.srl.isRefreshing = false
             }
         }
         viewModel.errorMessage.observe(this) { message ->
@@ -104,16 +105,49 @@ class HomeActivity : ThemeComponent() {
         }
         viewModel.stories.observe(this) { stories ->
             stories.map {
-                adapter.updateData(stories)
+                adapter.replaceData(stories)
+            }
+        }
+        viewModel.appendStories.observe(this) { stories ->
+            stories.map {
+                adapter.addData(stories)
+            }
+        }
+
+        // swiper refresh layout
+        binding.srl.setOnRefreshListener {
+            if (viewModel.isLoading.value != null && viewModel.isLoading.value == false) {
+                viewModel.currentPage.value = 1
+                viewModel.fetchStories()
             }
         }
 
         // recycler view
+        val layoutManager = LinearLayoutManager(this)
         binding.veilRecyclerView.setAdapter(adapter)
-        binding.veilRecyclerView.setLayoutManager(LinearLayoutManager(this))
+        binding.veilRecyclerView.setLayoutManager(layoutManager)
         binding.veilRecyclerView.addVeiledItems(10)
+        binding.veilRecyclerView.getRecyclerView()
+            .addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val isLoading = viewModel.isLoading.value as Boolean
+                    val isLastPage = viewModel.isLastPage.value as Boolean
+                    super.onScrolled(recyclerView, dx, dy)
 
-        viewModel.fetchStories()
+                    // Load more data when the user is near the end of the list
+                    if (!isLoading && !isLastPage) {
+                        val visibleItemCount = layoutManager.childCount
+                        val totalItemCount = layoutManager.itemCount
+                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                        ) {
+                            viewModel.fetchStories(true)
+                        }
+                    }
+                }
+            })
 
         // retry fetch
         binding.btnRetry.setOnClickListener {
@@ -125,6 +159,9 @@ class HomeActivity : ThemeComponent() {
             val intent = Intent(this, AddStoryActivity::class.java)
             startActivity(intent)
         }
+
+        // fetch stories
+        viewModel.fetchStories()
     }
 
     override fun onDestroy() {

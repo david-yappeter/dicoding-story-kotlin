@@ -39,10 +39,15 @@ class DatastoreSettings private constructor(private val dataStore: DataStore<Pre
         }
     }
 
-    override suspend fun getDarkThemeSettings(): Boolean {
+    override fun getDarkThemeSettingsAsync(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
             preferences[KEY_DARK_THEME] ?: false
-        }.first()
+        }
+    }
+
+
+    override suspend fun getDarkThemeSettings(): Boolean {
+        return getDarkThemeSettingsAsync().first()
     }
 
     override suspend fun saveUserData(userData: UserData?) {

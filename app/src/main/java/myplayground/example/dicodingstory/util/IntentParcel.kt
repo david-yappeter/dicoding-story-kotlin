@@ -8,7 +8,7 @@ class IntentParcel {
     companion object {
         inline fun <reified T : Parcelable?> parseIntent(intent: Intent, key: String): T? {
             return if (Build.VERSION.SDK_INT >= 33) {
-                intent.getParcelableExtra<T>(key, T::class.java)
+                intent.getParcelableExtra(key, T::class.java)
             } else {
                 @Suppress("DEPRECATION")
                 intent.getParcelableExtra<T>(key)

@@ -2,8 +2,6 @@ package myplayground.example.dicodingstory.activities.add_story
 
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import myplayground.example.dicodingstory.network.DicodingStoryApi
-import myplayground.example.dicodingstory.util.FileUtils
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

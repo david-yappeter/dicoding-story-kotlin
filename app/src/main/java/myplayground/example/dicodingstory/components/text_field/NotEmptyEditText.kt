@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Patterns
 import com.google.android.material.textfield.TextInputEditText
 
 class NotEmptyEditText : TextInputEditText {

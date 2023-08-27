@@ -19,7 +19,7 @@ class SignInViewModel(
     val errorMessage = MutableLiveData<String>()
     val isSuccess = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>()
-    val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+    private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled ${throwable.localizedMessage}")
     }
 

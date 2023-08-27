@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -16,7 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import myplayground.example.dicodingstory.R
-import myplayground.example.dicodingstory.components.Theme.ThemeComponent
+import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityAddStoryBinding
 import myplayground.example.dicodingstory.local_storage.DatastoreSettings
 import myplayground.example.dicodingstory.local_storage.dataStore
@@ -133,7 +132,7 @@ class AddStoryActivity : ThemeComponent() {
         binding.btnUpload.setOnClickListener {
             val description = binding.etDesc.text.toString()
 
-            if (description.isNullOrEmpty()) {
+            if (description.isEmpty()) {
                 binding.etDesc.error = this.getString(R.string.error_input_empty)
             } else {
                 viewModel.addStory(description)

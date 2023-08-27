@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
-import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.landing.LandingActivity
 import myplayground.example.dicodingstory.databinding.ActivitySplashScreenBinding
 

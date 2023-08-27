@@ -9,7 +9,7 @@ data class Story(
     val name: String,
     val description: String,
     val photoUrl: String,
-    val created_at: String?,
+    val createdAt: String?,
     val lat: Float?,
     val lon: Float?,
 ) : Parcelable {
@@ -28,7 +28,7 @@ data class Story(
         parcel.writeString(name)
         parcel.writeString(description)
         parcel.writeString(photoUrl)
-        parcel.writeString(created_at)
+        parcel.writeString(createdAt)
         parcel.writeValue(lat)
         parcel.writeValue(lon)
     }
