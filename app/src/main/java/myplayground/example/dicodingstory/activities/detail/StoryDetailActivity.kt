@@ -21,7 +21,7 @@ class StoryDetailActivity : AppCompatActivity() {
     private var _binding: ActivityStoryDetailBinding? = null
     private val binding get() = _binding ?: error("View binding not initialized")
     private val viewModel: StoryDetailViewModel by viewModels {
-        StoryDetailViewModelFactory(NetworkConfig.create(DicodingStoryApi.BASE_URL))
+        StoryDetailViewModelFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

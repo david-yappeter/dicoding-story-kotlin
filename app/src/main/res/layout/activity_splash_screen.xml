@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".activities.splash_screen.SplashScreenActivity">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_72px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

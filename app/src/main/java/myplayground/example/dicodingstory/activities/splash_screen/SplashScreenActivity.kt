@@ -8,11 +8,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
 import myplayground.example.dicodingstory.activities.landing.LandingActivity
+import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivitySplashScreenBinding
 
 @Suppress("DEPRECATION")
 @SuppressLint("CustomSplashScreen")
-class SplashScreenActivity : AppCompatActivity() {
+class SplashScreenActivity : ThemeComponent() {
     private var _binding: ActivitySplashScreenBinding? = null
     private val binding get() = _binding ?: error("View binding is not initialized")
 

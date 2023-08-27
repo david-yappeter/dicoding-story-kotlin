@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import myplayground.example.dicodingstory.network.DicodingStoryApi
+import myplayground.example.dicodingstory.util.FileUtils
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -25,7 +26,7 @@ class AddStoryViewModel(private val networkApi: DicodingStoryApi) : ViewModel() 
 
     fun addStory(description: String) {
         if (imageFile.value != null) {
-            val file = imageFile.value as File
+            val file = FileUtils.reduceFileImage(imageFile.value as File)
             val descriptionRequestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())
             val imageMultipart = MultipartBody.Part.createFormData(
