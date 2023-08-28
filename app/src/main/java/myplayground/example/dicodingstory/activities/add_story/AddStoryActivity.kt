@@ -27,8 +27,9 @@ import java.io.File
 class AddStoryActivity : ThemeComponent() {
     companion object {
         const val PERMISSION_REQUEST_CODE = 0
+        const val INTENT_RESULT_CODE = 1
+        const val EXTRA_IS_STORY_ADDED = "is_story_added"
     }
-
 
     private lateinit var currentPhotoPath: String
     private var _binding: ActivityAddStoryBinding? = null
@@ -119,6 +120,9 @@ class AddStoryActivity : ThemeComponent() {
         viewModel.isSuccess.observe(this) { isSuccess ->
             if (isSuccess) {
                 Toast.makeText(this, "Story added", Toast.LENGTH_SHORT).show()
+                val resultIntent = intent
+                resultIntent.putExtra(EXTRA_IS_STORY_ADDED, true)
+                setResult(INTENT_RESULT_CODE, resultIntent)
                 onBackPressedDispatcher.onBackPressed()
             }
         }

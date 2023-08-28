@@ -9,8 +9,6 @@ import com.bumptech.glide.Glide
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.databinding.ActivityStoryDetailBinding
 import myplayground.example.dicodingstory.model.Story
-import myplayground.example.dicodingstory.network.DicodingStoryApi
-import myplayground.example.dicodingstory.network.NetworkConfig
 import myplayground.example.dicodingstory.util.IntentParcel
 
 class StoryDetailActivity : AppCompatActivity() {

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
@@ -29,17 +31,16 @@ class HomeActivity : ThemeComponent() {
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModelFactory(
             NetworkConfig.create(
-                DicodingStoryApi.BASE_URL,
-                DatastoreSettings.getInstance(this.dataStore)
+                DicodingStoryApi.BASE_URL, DatastoreSettings.getInstance(this.dataStore)
             )
         )
     }
+    private val layoutManager = LinearLayoutManager(this)
     private val adapter = StoryListAdapter { v, story ->
         val intent = Intent(v.context, StoryDetailActivity::class.java)
         intent.putExtra(StoryDetailActivity.EXTRA_STORY, story)
         startActivity(
-            intent,
-            ActivityOptionsCompat.makeSceneTransitionAnimation(
+            intent, ActivityOptionsCompat.makeSceneTransitionAnimation(
                 this,
                 Pair(v.findViewById(R.id.tv_username), "tv_username"),
                 Pair(v.findViewById(R.id.tv_description), "tv_description"),
@@ -47,6 +48,20 @@ class HomeActivity : ThemeComponent() {
                 Pair(v.findViewById(R.id.iv_post_user), "iv_post_user"),
             ).toBundle()
         )
+    }
+    private val resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == AddStoryActivity.INTENT_RESULT_CODE && result.data != null) {
+            val isStoryAdded =
+                result.data?.getBooleanExtra(AddStoryActivity.EXTRA_IS_STORY_ADDED, false)
+
+            if (isStoryAdded != null && isStoryAdded) {
+                viewModel.currentPage.value = 1
+                viewModel.fetchStories()
+                layoutManager.scrollToPosition(0)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,11 +85,9 @@ class HomeActivity : ThemeComponent() {
                 R.id.action_settings -> {
                     val intent = Intent(this, SettingActivity::class.java)
                     startActivity(
-                        intent,
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        intent, ActivityOptionsCompat.makeSceneTransitionAnimation(
                             this@HomeActivity,
-                        )
-                            .toBundle()
+                        ).toBundle()
                     )
                     true
                 }
@@ -87,7 +100,7 @@ class HomeActivity : ThemeComponent() {
     }
 
     private fun setupContent() {
-        // view model observer
+        viewModel.currentPage.value = 1 // view model observer
         viewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
                 binding.errorContainer.visibility = View.GONE
@@ -114,16 +127,7 @@ class HomeActivity : ThemeComponent() {
             }
         }
 
-        // swiper refresh layout
-        binding.srl.setOnRefreshListener {
-            if (viewModel.isLoading.value != null && viewModel.isLoading.value == false) {
-                viewModel.currentPage.value = 1
-                viewModel.fetchStories()
-            }
-        }
-
         // recycler view
-        val layoutManager = LinearLayoutManager(this)
         binding.veilRecyclerView.setAdapter(adapter)
         binding.veilRecyclerView.setLayoutManager(layoutManager)
         binding.veilRecyclerView.addVeiledItems(10)
@@ -140,14 +144,21 @@ class HomeActivity : ThemeComponent() {
                         val totalItemCount = layoutManager.itemCount
                         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                        ) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
                             viewModel.fetchStories(true)
                         }
                     }
                 }
             })
+
+        // swiper refresh layout
+        binding.srl.setOnRefreshListener {
+            if (viewModel.isLoading.value != null && viewModel.isLoading.value == false) {
+                viewModel.currentPage.value = 1
+                viewModel.fetchStories()
+                layoutManager.scrollToPosition(0)
+            }
+        }
 
         // retry fetch
         binding.btnRetry.setOnClickListener {
@@ -157,7 +168,7 @@ class HomeActivity : ThemeComponent() {
         // FAB add
         binding.fabAdd.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
-            startActivity(intent)
+            resultLauncher.launch(intent)
         }
 
         // fetch stories
