@@ -1,6 +1,5 @@
 package myplayground.example.dicodingstory.activities.maps
 
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,7 +12,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import myplayground.example.dicodingstory.R
-import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityMapsBinding
 

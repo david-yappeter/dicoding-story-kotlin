@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,10 +13,7 @@ import myplayground.example.dicodingstory.model.Story
 import myplayground.example.dicodingstory.util.DateTimeRelative
 
 class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> Unit = { _, _ -> }) :
-    RecyclerView.Adapter<StoryListAdapter.ViewHolder>() {
-    private val storyList: MutableList<Story> = mutableListOf()
-
-    override fun getItemCount(): Int = storyList.size
+    PagingDataAdapter<Story, StoryListAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.story_row, parent, false)
@@ -23,29 +21,10 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(storyList[position])
-    }
-
-    fun replaceData(newStoryList: List<Story>) {
-        val diffCallback = StoryDiffCallback(storyList, newStoryList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-        storyList.clear()
-        storyList.addAll(newStoryList)
-
-        diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun addData(newStoryList: List<Story>) {
-        val diffCallback = StoryDiffCallback(storyList, newStoryList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-        val startPosition = storyList.size
-        storyList.addAll(newStoryList)
-
-        diffResult.dispatchUpdatesTo(this)
-
-        notifyItemRangeInserted(startPosition, newStoryList.size)
+        val data = getItem(position)
+        if(data != null) {
+            holder.bind(data)
+        }
     }
 
     inner class ViewHolder(itemView: View) :
@@ -72,6 +51,18 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
                 }
 
                 else -> {}
+            }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<Story>() {
+            override fun areItemsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Story, newItem: Story): Boolean {
+                return oldItem.id == newItem.id
             }
         }
     }

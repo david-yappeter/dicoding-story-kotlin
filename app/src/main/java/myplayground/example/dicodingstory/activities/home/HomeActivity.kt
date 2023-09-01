@@ -3,20 +3,18 @@ package myplayground.example.dicodingstory.activities.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.add_story.AddStoryActivity
 import myplayground.example.dicodingstory.activities.detail.StoryDetailActivity
 import myplayground.example.dicodingstory.activities.maps.MapsActivity
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
+import myplayground.example.dicodingstory.adapter.LoadingStateAdapter
 import myplayground.example.dicodingstory.adapter.StoryListAdapter
 import myplayground.example.dicodingstory.components.theme.ThemeComponent
 import myplayground.example.dicodingstory.databinding.ActivityHomeBinding
@@ -58,9 +56,7 @@ class HomeActivity : ThemeComponent() {
                 result.data?.getBooleanExtra(AddStoryActivity.EXTRA_IS_STORY_ADDED, false)
 
             if (isStoryAdded != null && isStoryAdded) {
-                viewModel.currentPage.value = 1
-                viewModel.fetchStories()
-                layoutManager.scrollToPosition(0)
+                adapter.refresh()
             }
         }
     }
@@ -108,73 +104,28 @@ class HomeActivity : ThemeComponent() {
     }
 
     private fun setupContent() {
-        viewModel.currentPage.value = 1 // view model observer
-        viewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading) {
-                binding.errorContainer.visibility = View.GONE
-                binding.veilRecyclerView.visibility = View.VISIBLE
-                binding.veilRecyclerView.veil()
-            } else {
-                binding.veilRecyclerView.unVeil()
-                binding.srl.isRefreshing = false
-            }
-        }
-        viewModel.errorMessage.observe(this) { message ->
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-            binding.errorContainer.visibility = View.VISIBLE
-            binding.veilRecyclerView.visibility = View.GONE
-        }
-        viewModel.stories.observe(this) { stories ->
-            stories.map {
-                adapter.replaceData(stories)
-            }
-        }
-        viewModel.appendStories.observe(this) { stories ->
-            stories.map {
-                adapter.addData(stories)
-            }
-        }
         viewModel.pagerStories.observe(this) {
             adapter.submitData(lifecycle, it)
+            binding.srl.isRefreshing = false
         }
 
         // recycler view
-        binding.veilRecyclerView.setAdapter(adapter)
+        binding.veilRecyclerView.setAdapter(adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        ))
         binding.veilRecyclerView.setLayoutManager(layoutManager)
         binding.veilRecyclerView.addVeiledItems(10)
 
-//        binding.veilRecyclerView.getRecyclerView()
-//            .addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                    val isLoading = viewModel.isLoading.value as Boolean
-//                    val isLastPage = viewModel.isLastPage.value as Boolean
-//                    super.onScrolled(recyclerView, dx, dy)
-//
-//                    // Load more data when the user is near the end of the list
-//                    if (!isLoading && !isLastPage) {
-//                        val visibleItemCount = layoutManager.childCount
-//                        val totalItemCount = layoutManager.itemCount
-//                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-//
-//                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-//                            viewModel.fetchStories(true)
-//                        }
-//                    }
-//                }
-//            })
-
         // swiper refresh layout
         binding.srl.setOnRefreshListener {
-            if (viewModel.isLoading.value != null && viewModel.isLoading.value == false) {
-                viewModel.currentPage.value = 1
-                viewModel.fetchStories()
-                layoutManager.scrollToPosition(0)
-            }
+            adapter.refresh()
         }
 
         // retry fetch
         binding.btnRetry.setOnClickListener {
-            viewModel.fetchStories()
+            adapter.refresh()
         }
 
         // FAB add
@@ -182,9 +133,6 @@ class HomeActivity : ThemeComponent() {
             val intent = Intent(this, AddStoryActivity::class.java)
             resultLauncher.launch(intent)
         }
-
-        // fetch stories
-        viewModel.fetchStories()
     }
 
     override fun onDestroy() {

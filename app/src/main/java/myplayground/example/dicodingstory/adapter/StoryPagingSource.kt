@@ -25,7 +25,7 @@ class StoryPagingSource(private val networkApi: DicodingStoryApi) : PagingSource
             return LoadResult.Page(
                 data = stories,
                 prevKey = if (page == INITIAL_PAGE_INDEX) null else page - 1,
-                nextKey = if (stories.isNullOrEmpty()) null else page + 1,
+                nextKey = if (stories.isEmpty()) null else page + 1,
             )
         } catch (exception: Exception) {
             return LoadResult.Error(exception)
