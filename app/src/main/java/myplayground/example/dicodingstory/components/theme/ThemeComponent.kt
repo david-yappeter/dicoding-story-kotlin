@@ -18,7 +18,6 @@ open class ThemeComponent : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 
-
     private fun setupTheme() {
         viewModel.getDarkThemeSettingsAsync().observe(this) { isDarkTheme ->
             if (isDarkTheme) {

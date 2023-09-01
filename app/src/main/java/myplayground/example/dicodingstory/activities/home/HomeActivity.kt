@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import myplayground.example.dicodingstory.R
 import myplayground.example.dicodingstory.activities.add_story.AddStoryActivity
 import myplayground.example.dicodingstory.activities.detail.StoryDetailActivity
+import myplayground.example.dicodingstory.activities.maps.MapsActivity
 import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.adapter.StoryListAdapter
 import myplayground.example.dicodingstory.components.theme.ThemeComponent
@@ -78,6 +79,7 @@ class HomeActivity : ThemeComponent() {
         val toolbar = binding.appbar.topAppBar
 
         toolbar.menu.clear()
+        toolbar.inflateMenu(R.menu.map_menu)
         toolbar.inflateMenu(R.menu.app_menu)
 
         toolbar.setOnMenuItemClickListener { item: MenuItem ->
@@ -85,9 +87,15 @@ class HomeActivity : ThemeComponent() {
                 R.id.action_settings -> {
                     val intent = Intent(this, SettingActivity::class.java)
                     startActivity(
-                        intent, ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            this@HomeActivity,
-                        ).toBundle()
+                        intent,
+                    )
+                    true
+                }
+
+                R.id.action_map -> {
+                    val intent = Intent(this, MapsActivity::class.java)
+                    startActivity(
+                        intent,
                     )
                     true
                 }
@@ -126,30 +134,34 @@ class HomeActivity : ThemeComponent() {
                 adapter.addData(stories)
             }
         }
+        viewModel.pagerStories.observe(this) {
+            adapter.submitData(lifecycle, it)
+        }
 
         // recycler view
         binding.veilRecyclerView.setAdapter(adapter)
         binding.veilRecyclerView.setLayoutManager(layoutManager)
         binding.veilRecyclerView.addVeiledItems(10)
-        binding.veilRecyclerView.getRecyclerView()
-            .addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val isLoading = viewModel.isLoading.value as Boolean
-                    val isLastPage = viewModel.isLastPage.value as Boolean
-                    super.onScrolled(recyclerView, dx, dy)
 
-                    // Load more data when the user is near the end of the list
-                    if (!isLoading && !isLastPage) {
-                        val visibleItemCount = layoutManager.childCount
-                        val totalItemCount = layoutManager.itemCount
-                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                            viewModel.fetchStories(true)
-                        }
-                    }
-                }
-            })
+//        binding.veilRecyclerView.getRecyclerView()
+//            .addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                    val isLoading = viewModel.isLoading.value as Boolean
+//                    val isLastPage = viewModel.isLastPage.value as Boolean
+//                    super.onScrolled(recyclerView, dx, dy)
+//
+//                    // Load more data when the user is near the end of the list
+//                    if (!isLoading && !isLastPage) {
+//                        val visibleItemCount = layoutManager.childCount
+//                        val totalItemCount = layoutManager.itemCount
+//                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+//
+//                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+//                            viewModel.fetchStories(true)
+//                        }
+//                    }
+//                }
+//            })
 
         // swiper refresh layout
         binding.srl.setOnRefreshListener {
