@@ -24,6 +24,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
+import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
@@ -80,8 +81,6 @@ class SignInViewModelTest {
 
         kotlinx.coroutines.delay(1000)
 
-        println("TESTTTT ${viewModel.errorMessage.value.toString()}")
-
         // Verify that isSuccess LiveData is set to true
         Mockito.verify(isSuccessObserver).onChanged(true)
 
@@ -93,5 +92,41 @@ class SignInViewModelTest {
 
         // Verify that the error message LiveData is not set
         assertNull(viewModel.errorMessage.value)
+    }
+
+    @Test
+    fun `when network error should fail`() = runTest(mainDispatchers) {
+        val email = "email@gmail.com"
+        val password = "12345678"
+
+        // Mock successful login response
+        Mockito.`when`(networkApi.login(LoginRequest(email, password)))
+            .thenAnswer {
+                throw IOException("Network error")
+            }
+
+        // Observer for errorMessage LiveData
+        val errorMessageObserver = Mockito.mock(Observer::class.java) as Observer<String>
+        viewModel.errorMessage.observeForever(errorMessageObserver)
+
+        // Observer for isSuccess LiveData
+        val isSuccessObserver = Mockito.mock(Observer::class.java) as Observer<Boolean>
+        viewModel.isSuccess.observeForever(isSuccessObserver)
+
+        // Call the loginUser method
+        viewModel.loginUser(email, password)
+
+        kotlinx.coroutines.delay(1000)
+
+        // Verify that isSuccess LiveData is set to false
+        Mockito.verify(isSuccessObserver).onChanged(false)
+
+        // Verify that the login method was called with the expected parameters
+        Mockito.verify(networkApi).login(LoginRequest(email, password))
+
+        // Verify that the error message LiveData is set
+        assertNotNull(viewModel.errorMessage.value)
+
+        Mockito.verify(errorMessageObserver).onChanged("Network error")
     }
 }

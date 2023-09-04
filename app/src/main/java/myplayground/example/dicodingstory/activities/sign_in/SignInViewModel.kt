@@ -17,10 +17,10 @@ class SignInViewModel(
     private val localStorageManager: LocalStorageManager
 ) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
-    val isSuccess = MutableLiveData<Boolean>(false)
+    val isSuccess = MutableLiveData<Boolean>()
     val isLoading = MutableLiveData<Boolean>(false)
     private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled ${throwable.localizedMessage}")
+        throwable.localizedMessage?.let { onError(it) }
     }
 
     fun loginUser(
@@ -55,6 +55,7 @@ class SignInViewModel(
 
     private fun onError(message: String) {
         errorMessage.postValue(message)
+        isSuccess.postValue(false)
         isLoading.postValue(false)
     }
 }
