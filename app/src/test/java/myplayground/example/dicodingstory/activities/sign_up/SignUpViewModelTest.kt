@@ -1,4 +1,4 @@
-package myplayground.example.dicodingstory.activities.sign_in
+package myplayground.example.dicodingstory.activities.sign_up
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -9,11 +9,9 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import myplayground.example.dicodingstory.local_storage.LocalStorageManager
 import myplayground.example.dicodingstory.network.DicodingStoryApi
-import myplayground.example.dicodingstory.network.request.LoginRequest
-import myplayground.example.dicodingstory.network.response.LoginResponse
-import myplayground.example.dicodingstory.network.response.LoginResultResponse
+import myplayground.example.dicodingstory.network.request.RegisterRequest
+import myplayground.example.dicodingstory.network.response.RegisterResponse
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -28,7 +26,7 @@ import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
-class SignInViewModelTest {
+class SignUpViewModelTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -36,17 +34,14 @@ class SignInViewModelTest {
     @Mock
     private lateinit var networkApi: DicodingStoryApi
 
-    @Mock
-    private lateinit var localStorageManager: LocalStorageManager
-
-    private lateinit var viewModel: SignInViewModel
+    private lateinit var viewModel: SignUpViewModel
     private lateinit var mainDispatchers: TestDispatcher
 
     @Before
     fun setUp() {
         mainDispatchers = UnconfinedTestDispatcher()
         Dispatchers.setMain(mainDispatchers)
-        viewModel = SignInViewModel(networkApi, localStorageManager)
+        viewModel = SignUpViewModel(networkApi)
 
     }
 
@@ -59,44 +54,43 @@ class SignInViewModelTest {
     @Test
     fun `when login should not null and success`() = runTest(mainDispatchers) {
         val dummyLoginResponse = Response.success(
-            LoginResponse(
+            RegisterResponse(
                 false,
                 "Success",
-                LoginResultResponse("as", "name", "token")
             )
         )
+        val name = "John Doe"
         val email = "email@gmail.com"
         val password = "12345678"
 
-        Mockito.`when`(networkApi.login(LoginRequest(email, password)))
+        // mock sign up response
+        Mockito.`when`(networkApi.register(RegisterRequest(name, email, password)))
             .thenReturn(dummyLoginResponse)
 
         val isSuccessObserver = Mockito.mock(Observer::class.java) as Observer<Boolean>
         viewModel.isSuccess.observeForever(isSuccessObserver)
 
-        viewModel.loginUser(email, password)
+        viewModel.registerUser(name, email, password)
 
         kotlinx.coroutines.delay(1000)
 
-        // verify isSuccess is set to true
+        // verify is success is set to true
         Mockito.verify(isSuccessObserver).onChanged(true)
 
-        // verify login method is called with expected parameter
-        Mockito.verify(networkApi).login(LoginRequest(email, password))
+        // verify the function is called with expected parameter
+        Mockito.verify(networkApi).register(RegisterRequest(name, email, password))
 
-        // verify localStorage saveUserData
-        Mockito.verify(localStorageManager).saveUserData(Mockito.any())
-
-        // verify error message is not set
+        // Verify that the error message LiveData is not set
         assertNull(viewModel.errorMessage.value)
     }
 
     @Test
     fun `when network error should fail`() = runTest(mainDispatchers) {
+        val name = "John Doe"
         val email = "email@gmail.com"
         val password = "12345678"
 
-        Mockito.`when`(networkApi.login(LoginRequest(email, password)))
+        Mockito.`when`(networkApi.register(RegisterRequest(name, email, password)))
             .thenAnswer {
                 throw IOException("Network error")
             }
@@ -107,20 +101,20 @@ class SignInViewModelTest {
         val isSuccessObserver = Mockito.mock(Observer::class.java) as Observer<Boolean>
         viewModel.isSuccess.observeForever(isSuccessObserver)
 
-        viewModel.loginUser(email, password)
+        // Call the loginUser method
+        viewModel.registerUser(name, email, password)
 
         kotlinx.coroutines.delay(1000)
 
-        // verify is success is set to false
+        // Verify that isSuccess LiveData is set to false
         Mockito.verify(isSuccessObserver).onChanged(false)
 
-        // verify login function is called with expected parameter
-        Mockito.verify(networkApi).login(LoginRequest(email, password))
+        // Verify that the login method was called with the expected parameters
+        Mockito.verify(networkApi).register(RegisterRequest(name, email, password))
 
-        // verify errorMessage is set
+        // Verify that the error message LiveData is set
         assertNotNull(viewModel.errorMessage.value)
 
-        // verify errorMessage content
         Mockito.verify(errorMessageObserver).onChanged("Network error")
     }
 }

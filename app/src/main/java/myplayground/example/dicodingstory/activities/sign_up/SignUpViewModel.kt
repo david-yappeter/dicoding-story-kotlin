@@ -15,7 +15,7 @@ class SignUpViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
     val isLoading = MutableLiveData<Boolean>()
     val isSuccess = MutableLiveData<Boolean>()
     private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled ${throwable.localizedMessage}")
+        throwable.localizedMessage?.let { onError(it) }
     }
 
     fun registerUser(
@@ -47,5 +47,6 @@ class SignUpViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
     private fun onError(message: String) {
         errorMessage.postValue(message)
         isLoading.postValue(false)
+        isSuccess.postValue(false)
     }
 }
