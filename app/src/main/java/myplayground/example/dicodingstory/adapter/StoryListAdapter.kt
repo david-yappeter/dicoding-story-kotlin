@@ -22,7 +22,7 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = getItem(position)
-        if(data != null) {
+        if (data != null) {
             holder.bind(data)
         }
     }
@@ -56,7 +56,7 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
     }
 
     companion object {
-        private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<Story>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Story>() {
             override fun areItemsTheSame(oldItem: Story, newItem: Story): Boolean {
                 return oldItem == newItem
             }
