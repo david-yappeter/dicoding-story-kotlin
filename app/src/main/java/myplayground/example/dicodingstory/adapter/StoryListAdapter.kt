@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import myplayground.example.dicodingstory.R
+import myplayground.example.dicodingstory.databinding.StoryRowBinding
 import myplayground.example.dicodingstory.model.Story
 import myplayground.example.dicodingstory.util.DateTimeRelative
 
@@ -16,7 +17,7 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
     PagingDataAdapter<Story, StoryListAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.story_row, parent, false)
+        val v = StoryRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(v)
     }
 
@@ -27,20 +28,20 @@ class StoryListAdapter(private val onClickListener: (v: View, story: Story) -> U
         }
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(private val binding: StoryRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(story: Story) {
-            Glide.with(itemView).load(story.photoUrl)
-                .into(itemView.findViewById(R.id.iv_post_image))
-            itemView.findViewById<TextView>(R.id.tv_username).text = story.name
-            itemView.findViewById<TextView>(R.id.tv_description).text = story.description
+            Glide.with(binding.root).load(story.photoUrl)
+                .into(binding.ivPostImage)
+            binding.tvUsername.text = story.name
+            binding.tvDescription.text = story.description
 
-            itemView.findViewById<TextView>(R.id.tv_posted_at).text =
+            binding.tvPostedAt.text =
                 if (story.createdAt != null)
                     DateTimeRelative.parseTimeRelative(story.createdAt) else ""
 
-            itemView.setOnClickListener {
-                onClick(itemView, story)
+            binding.clStory.setOnClickListener { v ->
+                onClick(v, story)
             }
         }
 
