@@ -1,9 +1,11 @@
 package myplayground.example.dicodingstory.activities.add_story
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -37,8 +39,10 @@ class AddStoryActivity : ThemeComponent() {
     private val viewModel: AddStoryViewModel by viewModels {
         AddStoryViewModelFactory(
             NetworkConfig.create(
+
                 DicodingStoryApi.BASE_URL, DatastoreSettings.getInstance(this.dataStore)
-            )
+            ),
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
         )
     }
 
@@ -89,8 +93,7 @@ class AddStoryActivity : ThemeComponent() {
         }
     }
 
-    private fun setupContent() {
-        // view model observer
+    private fun setupContent() { // view model observer
         viewModel.cameraBitmap.observe(this) { bitmap ->
             if (bitmap != null) {
                 binding.ivPostImage.setImageBitmap(bitmap)
@@ -142,17 +145,24 @@ class AddStoryActivity : ThemeComponent() {
                 viewModel.addStory(description)
             }
         }
+        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.isIncludeLocation.value = isChecked
+        }
     }
 
     private fun setupPermission() {
         val cameraPermission = Manifest.permission.CAMERA
         val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
 
         val cameraPermissionGranted = ContextCompat.checkSelfPermission(
             this, cameraPermission
         ) == PackageManager.PERMISSION_GRANTED
         val galleryPermissionGranted = ContextCompat.checkSelfPermission(
             this, galleryPermission
+        ) == PackageManager.PERMISSION_GRANTED
+        val locationPermissionGranted = ContextCompat.checkSelfPermission(
+            this, locationPermission
         ) == PackageManager.PERMISSION_GRANTED
 
         val permissionsToRequest = mutableListOf<String>()
@@ -165,8 +175,11 @@ class AddStoryActivity : ThemeComponent() {
             permissionsToRequest.add(galleryPermission)
         }
 
-        if (permissionsToRequest.isNotEmpty()) {
-            // Request the permissions that are not granted.
+        if (!locationPermissionGranted) {
+            permissionsToRequest.add(locationPermission)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) { // Request the permissions that are not granted.
             ActivityCompat.requestPermissions(
                 this, permissionsToRequest.toTypedArray(), PERMISSION_REQUEST_CODE
             )
@@ -215,6 +228,11 @@ class AddStoryActivity : ThemeComponent() {
 
                         Manifest.permission.READ_EXTERNAL_STORAGE -> {
                             Toast.makeText(this, "Gallery permission denied", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        Manifest.permission.ACCESS_FINE_LOCATION -> {
+                            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }

@@ -26,7 +26,7 @@ class HomeViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
         ),
         pagingSourceFactory = {
             StoryPagingSource(networkApi)
-        }
+        },
     ).liveData.cachedIn(viewModelScope)
 
 }
