@@ -46,14 +46,8 @@ class StoryDetailActivity : AppCompatActivity() {
             ?: error("Intent variable not initialized")
 
         // view model observer
-        viewModel.isLoading.observe(this) { isLoading ->
-
-        }
         viewModel.errorMessage.observe(this) { errorMessage ->
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-        }
-        viewModel.storyDetail.observe(this) { story ->
-
         }
 
         Glide.with(this).load(story.photoUrl).into(binding.ivPostImage)
