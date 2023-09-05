@@ -17,6 +17,7 @@ import myplayground.example.dicodingstory.activities.settings.SettingActivity
 import myplayground.example.dicodingstory.adapter.LoadingStateAdapter
 import myplayground.example.dicodingstory.adapter.StoryListAdapter
 import myplayground.example.dicodingstory.components.theme.ThemeComponent
+import myplayground.example.dicodingstory.database.StoryDatabase
 import myplayground.example.dicodingstory.databinding.ActivityHomeBinding
 import myplayground.example.dicodingstory.local_storage.DatastoreSettings
 import myplayground.example.dicodingstory.local_storage.dataStore
@@ -29,6 +30,7 @@ class HomeActivity : ThemeComponent() {
         get(): ActivityHomeBinding = _binding ?: error("View binding is not initialized")
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModelFactory(
+            StoryDatabase.getDatabase(this),
             NetworkConfig.create(
                 DicodingStoryApi.BASE_URL, DatastoreSettings.getInstance(this.dataStore)
             )

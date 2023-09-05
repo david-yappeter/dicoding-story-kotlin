@@ -39,12 +39,20 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    def room_version = '2.5.2'
     def ktx_core_version = '1.10.1'
     def lottie_version = '6.1.0'
     def retrofit_version = '2.6.2'
     def datastore_version = '1.0.0'
     def lifecycle_version = '2.6.1'
+
+    // location service
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    // room lifecycle dependencies
+    implementation "androidx.room:room-ktx:${room_version}"
+    kapt "androidx.room:room-compiler:${room_version}"
+    implementation 'androidx.room:room-paging:2.6.0-beta01'
 
     // material tap target prompt
     implementation 'uk.co.samuelwall:material-tap-target-prompt:3.3.2'
@@ -53,7 +61,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${retrofit_version}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit_version}"
     implementation("com.squareup.okhttp3:logging-interceptor:4.2.0")
-
 
     // lottie implementation
     implementation "com.airbnb.android:lottie:${lottie_version}"
