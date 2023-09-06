@@ -1,12 +1,9 @@
 package myplayground.example.dicodingstory.activities.add_story
 
-import android.app.Application
-import android.content.Context
 import android.location.LocationManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import myplayground.example.dicodingstory.network.DicodingStoryApi
-import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
 class AddStoryViewModelFactory(

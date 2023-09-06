@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.location.LocationManager
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,9 +27,7 @@ class AddStoryViewModel(
     val imageFile = MutableLiveData<File?>()
     val galleryUri = MutableLiveData<Uri?>()
     val cameraBitmap = MutableLiveData<Bitmap?>()
-    val isIncludeLocation = MutableLiveData<Boolean>(false)
-    val lat = MutableLiveData<Double>()
-    val lon = MutableLiveData<Double>()
+    val isIncludeLocation = MutableLiveData(false)
 
     @SuppressLint("MissingPermission")
     fun addStory(description: String) {

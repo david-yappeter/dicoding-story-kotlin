@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import myplayground.example.dicodingstory.local_storage.LocalStorageManager
 import myplayground.example.dicodingstory.model.Story
 import myplayground.example.dicodingstory.network.DicodingStoryApi
 
@@ -16,8 +15,8 @@ class MapsViewModel(
 ) : ViewModel() {
     val stories = MutableLiveData<List<Story>>(listOf())
     val errorMessage = MutableLiveData<String>()
-    val isSuccess = MutableLiveData<Boolean>(false)
-    val isLoading = MutableLiveData<Boolean>(false)
+    val isSuccess = MutableLiveData(false)
+    val isLoading = MutableLiveData(false)
     private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.localizedMessage?.let { onError(it) }
     }

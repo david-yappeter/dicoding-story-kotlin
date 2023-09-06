@@ -12,8 +12,8 @@ import myplayground.example.dicodingstory.network.request.RegisterRequest
 
 class SignUpViewModel(private val networkApi: DicodingStoryApi) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
-    val isLoading = MutableLiveData<Boolean>(false)
-    val isSuccess = MutableLiveData<Boolean>(false)
+    val isLoading = MutableLiveData(false)
+    val isSuccess = MutableLiveData(false)
     private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.localizedMessage?.let { onError(it) }
     }
