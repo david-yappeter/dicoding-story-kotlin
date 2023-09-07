@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,6 +37,7 @@ class AddStoryActivity : ThemeComponent() {
     private lateinit var currentPhotoPath: String
     private var _binding: ActivityAddStoryBinding? = null
     private val binding get() = _binding ?: error("View binding not initialized")
+    private var settingsIntentExecuted = false
     private val viewModel: AddStoryViewModel by viewModels {
         AddStoryViewModelFactory(
             NetworkConfig.create(
@@ -215,6 +217,8 @@ class AddStoryActivity : ThemeComponent() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
+            var permissionsDenied = false
+
             for (i in permissions.indices) {
                 val permission = permissions[i]
                 val grantResult = grantResults[i]
@@ -222,21 +226,63 @@ class AddStoryActivity : ThemeComponent() {
                 if (grantResult == PackageManager.PERMISSION_DENIED) {
                     when (permission) {
                         Manifest.permission.CAMERA -> {
-                            Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT)
+                            ActivityCompat.requestPermissions(
+                                this, arrayOf(permission), PERMISSION_REQUEST_CODE
+                            )
+
+                            Toast.makeText(
+                                this,
+                                "Camera permission denied, must be allowed",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
 
                         Manifest.permission.READ_EXTERNAL_STORAGE -> {
-                            Toast.makeText(this, "Gallery permission denied", Toast.LENGTH_SHORT)
+                            ActivityCompat.requestPermissions(
+                                this, arrayOf(permission), PERMISSION_REQUEST_CODE
+                            )
+
+                            Toast.makeText(
+                                this,
+                                "Gallery permission denied, must be allowed",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
 
                         Manifest.permission.ACCESS_FINE_LOCATION -> {
-                            Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT)
+                            ActivityCompat.requestPermissions(
+                                this, arrayOf(permission), PERMISSION_REQUEST_CODE
+                            )
+
+                            Toast.makeText(
+                                this,
+                                "Location permission denied, must be allowed",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }
-                    onBackPressedDispatcher.onBackPressed()
+                    permissionsDenied = true
+                }
+
+
+                if (permissionsDenied) {
+                    val shouldShowRationale = permissions.any {
+                        ActivityCompat.shouldShowRequestPermissionRationale(this, it)
+                    }
+
+                    if (!shouldShowRationale && !settingsIntentExecuted) {
+                        // permission is denied by user, we need to open setting manually
+                        val intent = Intent().apply {
+                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            data = Uri.fromParts("package", packageName, null)
+                        }
+                        startActivity(intent)
+                        settingsIntentExecuted = true
+                        onBackPressedDispatcher.onBackPressed()
+                    }
                 }
             }
         }

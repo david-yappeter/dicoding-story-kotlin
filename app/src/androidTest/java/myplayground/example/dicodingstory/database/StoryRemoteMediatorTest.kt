@@ -30,7 +30,6 @@ import retrofit2.Response
 @ExperimentalPagingApi
 @RunWith(AndroidJUnit4::class)
 class StoryRemoteMediatorTest {
-
     private var mockApi: DicodingStoryApi = FakeApiService()
     private var mockDb: StoryDatabase = Room.inMemoryDatabaseBuilder(
         ApplicationProvider.getApplicationContext(),
