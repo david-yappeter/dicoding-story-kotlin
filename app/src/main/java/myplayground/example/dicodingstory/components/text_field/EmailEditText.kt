@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.util.Patterns
 import com.google.android.material.textfield.TextInputEditText
 
-@Suppress("unused", "unused")
+@Suppress("unused")
 class EmailEditText : TextInputEditText {
 
     constructor(context: Context) : super(context) {

@@ -16,7 +16,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
 
-@Suppress("unused", "unused")
+@Suppress("unused")
 interface DicodingStoryApi {
     companion object {
         const val BASE_URL = "https://story-api.dicoding.dev/v1/"

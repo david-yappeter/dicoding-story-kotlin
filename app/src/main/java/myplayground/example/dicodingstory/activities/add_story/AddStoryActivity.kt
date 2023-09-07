@@ -1,6 +1,7 @@
 package myplayground.example.dicodingstory.activities.add_story
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,7 +10,6 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,11 +25,12 @@ import myplayground.example.dicodingstory.local_storage.dataStore
 import myplayground.example.dicodingstory.network.DicodingStoryApi
 import myplayground.example.dicodingstory.network.NetworkConfig
 import myplayground.example.dicodingstory.util.FileUtils
+import myplayground.example.dicodingstory.util.openAppSystemSettings
 import java.io.File
 
 class AddStoryActivity : ThemeComponent() {
     companion object {
-        const val PERMISSION_REQUEST_CODE = 0
+        const val PERMISSION_REQUEST_CODE = 10
         const val INTENT_RESULT_CODE = 1
         const val EXTRA_IS_STORY_ADDED = "is_story_added"
     }
@@ -37,14 +38,12 @@ class AddStoryActivity : ThemeComponent() {
     private lateinit var currentPhotoPath: String
     private var _binding: ActivityAddStoryBinding? = null
     private val binding get() = _binding ?: error("View binding not initialized")
-    private var settingsIntentExecuted = false
     private val viewModel: AddStoryViewModel by viewModels {
         AddStoryViewModelFactory(
             NetworkConfig.create(
 
                 DicodingStoryApi.BASE_URL, DatastoreSettings.getInstance(this.dataStore)
-            ),
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            ), getSystemService(Context.LOCATION_SERVICE) as LocationManager
         )
     }
 
@@ -154,14 +153,28 @@ class AddStoryActivity : ThemeComponent() {
 
     private fun setupPermission() {
         val cameraPermission = Manifest.permission.CAMERA
-        val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
+        //        val galleryPermission = Manifest.permission.READ_EXTERNAL_STORAGE
         val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
+        val requiredPermissions = arrayOf(
+            cameraPermission,
+            //            galleryPermission,
+            locationPermission
+        )
+
+        val allPermissionGranted = requiredPermissions.all {
+            ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+        }
+
+        if (!allPermissionGranted) {
+            ActivityCompat.requestPermissions(
+                this,
+                requiredPermissions,
+                PERMISSION_REQUEST_CODE,
+            )
+        }
 
         val cameraPermissionGranted = ContextCompat.checkSelfPermission(
             this, cameraPermission
-        ) == PackageManager.PERMISSION_GRANTED
-        val galleryPermissionGranted = ContextCompat.checkSelfPermission(
-            this, galleryPermission
         ) == PackageManager.PERMISSION_GRANTED
         val locationPermissionGranted = ContextCompat.checkSelfPermission(
             this, locationPermission
@@ -173,10 +186,6 @@ class AddStoryActivity : ThemeComponent() {
             permissionsToRequest.add(cameraPermission)
         }
 
-        if (!galleryPermissionGranted) {
-            permissionsToRequest.add(galleryPermission)
-        }
-
         if (!locationPermissionGranted) {
             permissionsToRequest.add(locationPermission)
         }
@@ -186,6 +195,20 @@ class AddStoryActivity : ThemeComponent() {
                 this, permissionsToRequest.toTypedArray(), PERMISSION_REQUEST_CODE
             )
         }
+    }
+
+    private fun showExplanation(
+        title: String,
+        onPositiveButton: () -> Unit = {},
+    ) {
+        val message = "Denied for the 2nd time, Must be manual set from settings"
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(title).setMessage(message).setPositiveButton(
+            android.R.string.ok
+        ) { _, _ ->
+            onPositiveButton()
+        }
+        builder.create().show()
     }
 
     private fun startGallery() {
@@ -217,71 +240,40 @@ class AddStoryActivity : ThemeComponent() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            var permissionsDenied = false
-
             for (i in permissions.indices) {
                 val permission = permissions[i]
                 val grantResult = grantResults[i]
 
                 if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    val deniedPermissions = listOf<String>().toMutableList()
                     when (permission) {
                         Manifest.permission.CAMERA -> {
-                            ActivityCompat.requestPermissions(
-                                this, arrayOf(permission), PERMISSION_REQUEST_CODE
-                            )
-
-                            Toast.makeText(
-                                this,
-                                "Camera permission denied, must be allowed",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
-
-                        Manifest.permission.READ_EXTERNAL_STORAGE -> {
-                            ActivityCompat.requestPermissions(
-                                this, arrayOf(permission), PERMISSION_REQUEST_CODE
-                            )
-
-                            Toast.makeText(
-                                this,
-                                "Gallery permission denied, must be allowed",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                                    this, Manifest.permission.CAMERA
+                                )
+                            ) {
+                                deniedPermissions.add("Camera")
+                            }
                         }
 
                         Manifest.permission.ACCESS_FINE_LOCATION -> {
-                            ActivityCompat.requestPermissions(
-                                this, arrayOf(permission), PERMISSION_REQUEST_CODE
-                            )
-
-                            Toast.makeText(
-                                this,
-                                "Location permission denied, must be allowed",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                                    this, Manifest.permission.ACCESS_FINE_LOCATION
+                                )
+                            ) {
+                                deniedPermissions.add("Location")
+                            }
                         }
                     }
-                    permissionsDenied = true
-                }
 
-
-                if (permissionsDenied) {
-                    val shouldShowRationale = permissions.any {
-                        ActivityCompat.shouldShowRequestPermissionRationale(this, it)
-                    }
-
-                    if (!shouldShowRationale && !settingsIntentExecuted) {
-                        // permission is denied by user, we need to open setting manually
-                        val intent = Intent().apply {
-                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                            data = Uri.fromParts("package", packageName, null)
+                    if (deniedPermissions.isNotEmpty()) {
+                        val title = deniedPermissions.joinToString(separator = ",")
+                        showExplanation(
+                            "$title Permission denied",
+                        ) {
+                            applicationContext.openAppSystemSettings()
                         }
-                        startActivity(intent)
-                        settingsIntentExecuted = true
-                        onBackPressedDispatcher.onBackPressed()
+
                     }
                 }
             }

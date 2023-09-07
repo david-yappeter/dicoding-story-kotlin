@@ -8,7 +8,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import myplayground.example.dicodingstory.model.Story
 import myplayground.example.dicodingstory.network.DicodingStoryApi
 import myplayground.example.dicodingstory.network.request.LoginRequest
@@ -24,7 +24,6 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlinx.coroutines.test.runTest
 import retrofit2.Response
 
 @ExperimentalPagingApi
