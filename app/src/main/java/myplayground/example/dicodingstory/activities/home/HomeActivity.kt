@@ -23,6 +23,7 @@ import myplayground.example.dicodingstory.local_storage.DatastoreSettings
 import myplayground.example.dicodingstory.local_storage.dataStore
 import myplayground.example.dicodingstory.network.DicodingStoryApi
 import myplayground.example.dicodingstory.network.NetworkConfig
+import myplayground.example.dicodingstory.repository.StoryRepository
 
 class HomeActivity : ThemeComponent() {
     private var _binding: ActivityHomeBinding? = null
@@ -30,9 +31,11 @@ class HomeActivity : ThemeComponent() {
         get(): ActivityHomeBinding = _binding ?: error("View binding is not initialized")
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModelFactory(
-            StoryDatabase.getDatabase(this),
-            NetworkConfig.create(
-                DicodingStoryApi.BASE_URL, DatastoreSettings.getInstance(this.dataStore)
+            StoryRepository(
+                StoryDatabase.getDatabase(this),
+                NetworkConfig.create(
+                    DicodingStoryApi.BASE_URL, DatastoreSettings.getInstance(this.dataStore)
+                ),
             )
         )
     }

@@ -2,18 +2,15 @@ package myplayground.example.dicodingstory.activities.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import myplayground.example.dicodingstory.database.StoryDatabase
-import myplayground.example.dicodingstory.network.DicodingStoryApi
-import java.lang.IllegalArgumentException
+import myplayground.example.dicodingstory.repository.StoryRepository
 
 @Suppress("UNCHECKED_CAST")
 class HomeViewModelFactory(
-    private val storyDatabase: StoryDatabase,
-    private val networkApi: DicodingStoryApi,
+    private val storyRepository: StoryRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(storyDatabase, networkApi) as T
+            return HomeViewModel(storyRepository) as T
         }
         throw IllegalArgumentException("Unknown view class model")
     }

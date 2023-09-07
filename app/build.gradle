@@ -10,6 +10,10 @@ android {
     namespace 'myplayground.example.dicodingstory'
     compileSdk 34
 
+    testOptions {
+        unitTests.returnDefaultValues true
+    }
+
     defaultConfig {
         applicationId "myplayground.example.dicodingstory"
         minSdk 23
@@ -103,6 +107,7 @@ dependencies {
 
     // coroutine test
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'

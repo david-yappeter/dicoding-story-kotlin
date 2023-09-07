@@ -15,8 +15,8 @@ class MapsViewModel(
 ) : ViewModel() {
     val stories = MutableLiveData<List<Story>>(listOf())
     val errorMessage = MutableLiveData<String>()
-    val isSuccess = MutableLiveData(false)
-    val isLoading = MutableLiveData(false)
+    private val isSuccess = MutableLiveData(false)
+    private val isLoading = MutableLiveData(false)
     private val backgroundExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.localizedMessage?.let { onError(it) }
     }
